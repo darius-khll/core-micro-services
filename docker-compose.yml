@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  coremicroservices:
+    image: coremicroservices
+    build:
+      context: .
+      dockerfile: CoreMicroServices/Dockerfile
