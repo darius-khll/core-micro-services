@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.0</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>22129b6d-17aa-4c68-884a-e0782b520b27</ProjectGuid>
+    <ProjectGuid>f5ba9a68-3d62-40cd-8014-4d878c553cb2</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>coremicroservices</DockerServiceName>
+    <DockerServiceName>firstservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

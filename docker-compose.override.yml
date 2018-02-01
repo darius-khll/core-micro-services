@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  coremicroservices:
+  firstservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

@@ -1,8 +1,16 @@
 version: '3'
 
+networks:
+  backend:
+  frontend:
+
 services:
-  coremicroservices:
-    image: coremicroservices
+  firstservice:
+    image: firstservice
     build:
       context: .
-      dockerfile: CoreMicroServices/Dockerfile
+      dockerfile: FirstService/Dockerfile
+    ports:
+     - "85:80"
+    networks:
+     - backend
