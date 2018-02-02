@@ -21,13 +21,15 @@ namespace FirstService
 
             app.Run(async (context) =>
             {
-                HttpClient client = new HttpClient();
+                using (HttpClient client = new HttpClient())
+                {
+                    var res = await client.GetAsync("http://secondService");
 
-                var res = await client.GetAsync("http://secondService");
+                    string content = await res.Content.ReadAsStringAsync();
 
-                string content = await res.Content.ReadAsStringAsync();
+                    await context.Response.WriteAsync($"First Service requested: {content}");
+                }
 
-                await context.Response.WriteAsync($"First Service requested: {content}");
             });
         }
     }
