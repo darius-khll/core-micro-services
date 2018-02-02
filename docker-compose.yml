@@ -11,6 +11,17 @@ services:
       context: .
       dockerfile: FirstService/Dockerfile
     ports:
-     - "85:80"
+     - "8181:80"
     networks:
      - backend
+
+  secondservice:
+    image: secondservice
+    build:
+      context: .
+      dockerfile: SecondService/Dockerfile
+    ports:
+     - "8182:80"
+    networks:
+     - backend
+
