@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstService", "FirstService\FirstService.csproj", "{741FA804-CD5D-4D80-A80B-DFAE9352E7BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstService", "FirstService\FirstService.csproj", "{741FA804-CD5D-4D80-A80B-DFAE9352E7BE}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F5BA9A68-3D62-40CD-8014-4D878C553CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondService", "SecondService\SecondService.csproj", "{77953304-3B3D-40F5-85E0-217E2482AAF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondService", "SecondService\SecondService.csproj", "{77953304-3B3D-40F5-85E0-217E2482AAF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A3529087-2738-4954-BDE8-F9B69C4FC761}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{741FA804-CD5D-4D80-A80B-DFAE9352E7BE} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
+		{77953304-3B3D-40F5-85E0-217E2482AAF2} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C6DCB67-0487-46A0-9622-98AA830FC3C5}
