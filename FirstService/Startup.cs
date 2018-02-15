@@ -1,5 +1,6 @@
 ﻿using FirstService.Implementations;
 using FirstService.Repository;
+using FirstService.Repository.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace FirstService
             services.AddScoped(provider => new RedisManagerPool(redisConnection).GetClient());
 
             services.AddSingleton<HttpClient>();
+            services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IRedisRepository, RedisRepository>();
             services.AddScoped<IFirstBusiness, FirstBusiness>();
 
