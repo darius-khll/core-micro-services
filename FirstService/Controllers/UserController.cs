@@ -18,7 +18,7 @@ namespace FirstService.Controllers
         public async Task<string> Index()
         {
             string name = await _firstBusiness.UserHandlerAsync("aaa", "bbb");
-            return "aaa";
+            return name;
         }
 
         [HttpGet]
