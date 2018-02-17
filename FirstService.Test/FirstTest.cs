@@ -1,7 +1,5 @@
 ﻿using FirstService.Repository;
 using Moq;
-using System;
-using System.Net.Http;
 using Xunit;
 
 namespace FirstService.Test
@@ -23,6 +21,14 @@ namespace FirstService.Test
             IFirstBusiness firstBusiness = new FirstBusiness(null, null);
             int result = firstBusiness.Sum(a, b);
             Assert.Equal(r, result);
+        }
+
+        [Fact]
+        public void ShuMethodShouldWorks()
+        {
+            IFirstBusiness firstBusiness = new FirstBusiness(null, null);
+            int result = firstBusiness.Sum(1, 2);
+            Assert.Equal(3, result);
         }
 
         [Theory]
