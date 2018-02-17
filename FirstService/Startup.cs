@@ -24,8 +24,7 @@ namespace FirstService
         {
             services.Configure<RedisOptions>(Configuration.GetSection("redis"));
 
-            string redisConnection = Configuration["redis:name"];
-            services.AddScoped(provider => new RedisManagerPool(redisConnection).GetClient());
+            ConfigureRedis(services);
 
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
@@ -33,6 +32,12 @@ namespace FirstService
             services.AddScoped<IFirstBusiness, FirstBusiness>();
 
             services.AddMvc();
+        }
+
+        public virtual void ConfigureRedis(IServiceCollection services)
+        {
+            string redisConnection = Configuration["redis:name"];
+            services.AddScoped(provider => new RedisManagerPool(redisConnection).GetClient());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
