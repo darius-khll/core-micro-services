@@ -1,5 +1,6 @@
 ﻿using FirstService.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
@@ -13,10 +14,18 @@ namespace FirstService.Controllers
             _firstBusiness = firstBusiness;
         }
 
+        [HttpGet]
         public async Task<string> Index()
         {
             string name = await _firstBusiness.UserHandlerAsync("aaa", "bbb");
-            return name;
+            return "aaa";
+        }
+
+        [HttpGet]
+        public string GetUser()
+        {
+            string user = _firstBusiness.UserTest("aaa", "bbb");
+            return user;
         }
 
     }
