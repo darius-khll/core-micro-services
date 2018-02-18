@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceStack.Redis;
+using StackExchange.Redis;
 using System.Net.Http;
 
 namespace FirstService
@@ -25,6 +25,7 @@ namespace FirstService
             services.Configure<RedisOptions>(Configuration.GetSection("redis"));
 
             ConfigureRedis(services);
+            ConfigureStagingServices(services);
 
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
@@ -36,8 +37,21 @@ namespace FirstService
 
         public virtual void ConfigureRedis(IServiceCollection services)
         {
-            string redisConnection = Configuration["redis:name"];
-            services.AddScoped(provider => new RedisManagerPool(redisConnection).GetClient());
+            string redisHost = Configuration["redis:host"];
+            services.AddScoped(provider => ConnectionMultiplexer.Connect(redisHost).GetDatabase());
+            //services.AddScoped(provider => new RedisManagerPool(redisHost).GetClient());
+        }
+
+        public virtual void ConfigureStagingServices(IServiceCollection services)
+        {
+            string redisHost = Configuration["redis:host"];
+            string redisName = Configuration["redis:name"];
+
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = redisHost;
+                options.InstanceName = redisName;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -1,6 +1,5 @@
 ﻿using FirstService.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
@@ -22,9 +21,9 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
-        public string GetUser()
+        public async Task<string> GetUser()
         {
-            string user = _firstBusiness.UserTest("aaa", "bbb");
+            string user = await _firstBusiness.UserTest("aaa", "bbb");
             return user;
         }
 

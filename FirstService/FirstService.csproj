@@ -10,14 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="CacheManager.StackExchange.Redis" Version="1.1.2" />-->
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
-    <PackageReference Include="ServiceStack.Redis.Core" Version="5.0.2" />
+    
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FirstService.Repository\FirstService.Repository.csproj" />
+    <ProjectReference Include="..\FirstService.Repository\FirstService.Repository.csproj" />
   </ItemGroup>
 
 </Project>
