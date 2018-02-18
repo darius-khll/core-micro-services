@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceStack.Redis;
+using StackExchange.Redis;
 
 namespace FirstService.Test
 {
@@ -12,7 +12,7 @@ namespace FirstService.Test
 
         public override void ConfigureRedis(IServiceCollection services)
         {
-            services.AddScoped(provider => new RedisManagerPool("localhost:5050").GetClient());
+            services.AddScoped(provider => ConnectionMultiplexer.Connect("localhost:5050").GetDatabase());
         }
     }
 }
