@@ -1,10 +1,6 @@
-﻿using FirstService.Controllers;
-using FirstService.Repository;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Caching.Distributed;
-using Moq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;

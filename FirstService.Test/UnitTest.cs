@@ -1,13 +1,15 @@
-﻿using FirstService.Repository;
+﻿using FirstService.Controllers;
+using FirstService.Repository;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FirstService.Test
 {
-    public class FirstTest
+    public class UnitTest
     {
 
-        public FirstTest()
+        public UnitTest()
         {
         }
 
@@ -34,16 +36,31 @@ namespace FirstService.Test
         [Theory]
         [InlineData("a", "b", "b")]
         [InlineData("c", "d", "d")]
-        public void RedisShouldWorks(string user, string name, string res)
+        public async Task RedisShouldWorks(string user, string name, string res)
         {
             var mockDependency1 = new Mock<IRedisRepository>();
-            mockDependency1.Setup(d => d.GetUser(user)).Returns(name);
+            mockDependency1.Setup(d => d.GetUser(user)).Returns(async () => await Task.Run(() => name));
 
             IFirstBusiness firstBusiness = new FirstBusiness(null, mockDependency1.Object);
 
-            string result = firstBusiness.UserTest(user, name);
+            string result = await firstBusiness.UserTest(user, name);
 
             Assert.Equal(res, result);
         }
+
+        [Fact]
+        public async Task CacheServiceShouldWorks()
+        {
+            var mockDependency1 = new Mock<ICacheBusiness>();
+            string s = "done";
+            mockDependency1.Setup((d) => d.RemoveCache()).Returns(async () => await Task.Run(() => s));
+
+            var c = new CacheController(mockDependency1.Object);
+
+            string result = await c.Del();
+
+            Assert.Equal("done", result);
+        }
+
     }
 }
