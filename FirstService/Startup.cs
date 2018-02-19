@@ -14,7 +14,6 @@ namespace FirstService
     {
         public IConfiguration Configuration { get; }
 
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +30,7 @@ namespace FirstService
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IRedisRepository, RedisRepository>();
             services.AddScoped<IFirstBusiness, FirstBusiness>();
+            services.AddScoped<ICacheBusiness, CacheBusiness>();
 
             services.AddMvc();
         }
@@ -39,7 +39,6 @@ namespace FirstService
         {
             string redisHost = Configuration["redis:host"];
             services.AddScoped(provider => ConnectionMultiplexer.Connect(redisHost).GetDatabase());
-            //services.AddScoped(provider => new RedisManagerPool(redisHost).GetClient());
         }
 
         public virtual void ConfigureStagingServices(IServiceCollection services)
