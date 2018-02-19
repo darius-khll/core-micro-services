@@ -31,6 +31,7 @@ namespace FirstService.Test
         {
             var response = await _client.GetAsync("/home/error");
 
+            //Remove EnsureSuccessStatusCode to see error in html
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("Error happened!", responseString);
@@ -46,15 +47,25 @@ namespace FirstService.Test
             Assert.Contains("bbb", responseString);
         }
 
+        //[Fact]
+        //public async Task UserController_Index_ShouldReturnSomething()
+        //{
+        //    var response = await _client.GetAsync("/user/index");
+
+        //    response.EnsureSuccessStatusCode();
+        //    var responseString = await response.Content.ReadAsStringAsync();
+        //    Assert.Contains("First Service requested: Second Service respond a user named: abc1 - bbb", responseString);
+        //}
+
         [Fact]
-        public async Task UserController_Index_ShouldReturnSomething()
+        public async Task CacheController_Remove_ShouldReturnDone()
         {
-            var response = await _client.GetAsync("/user/index");
+            var response = await _client.GetAsync("/cache/del");
 
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Contains("First Service requested: Second Service respond a user named: abc1 - bbb", responseString);
+            Assert.Contains("done", responseString);
         }
-        
+
     }
 }
