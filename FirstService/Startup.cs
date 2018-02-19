@@ -24,7 +24,7 @@ namespace FirstService
             services.Configure<RedisOptions>(Configuration.GetSection("redis"));
 
             ConfigureRedis(services);
-            ConfigureStagingServices(services);
+            ConfigureDistributedCache(services);
 
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
@@ -41,7 +41,7 @@ namespace FirstService
             services.AddScoped(provider => ConnectionMultiplexer.Connect(redisHost).GetDatabase());
         }
 
-        public virtual void ConfigureStagingServices(IServiceCollection services)
+        public virtual void ConfigureDistributedCache(IServiceCollection services)
         {
             string redisHost = Configuration["redis:host"];
             string redisName = Configuration["redis:name"];
