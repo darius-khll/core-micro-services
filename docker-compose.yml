@@ -45,3 +45,10 @@ services:
       - "5673:5673"
     networks:
      - backend
+
+  oauthserver:
+    image: oauthserver
+    build:
+      context: .
+      dockerfile: ../OAuthServer/Dockerfile
+
