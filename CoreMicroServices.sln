@@ -9,11 +9,17 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondService", "SecondService\SecondService.csproj", "{77953304-3B3D-40F5-85E0-217E2482AAF2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A3529087-2738-4954-BDE8-F9B69C4FC761}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FirstService", "FirstService", "{A3529087-2738-4954-BDE8-F9B69C4FC761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstService.Test", "FirstService.Test\FirstService.Test.csproj", "{1E228141-F273-4F6C-9258-F91D79EAA190}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstService.Test", "FirstService.Test\FirstService.Test.csproj", "{1E228141-F273-4F6C-9258-F91D79EAA190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstService.Repository", "FirstService.Repository\FirstService.Repository.csproj", "{18BA3236-C46B-4865-88A6-092DA497810F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstService.Repository", "FirstService.Repository\FirstService.Repository.csproj", "{18BA3236-C46B-4865-88A6-092DA497810F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecondService", "SecondService", "{9A56C492-5322-47DB-A3A8-5C613CD9332F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthoriziationServer", "AuthoriziationServer", "{C27358CE-83A5-43EF-BFB2-BF0854BDB293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthServer", "OAuthServer\OAuthServer.csproj", "{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,15 +47,20 @@ Global
 		{18BA3236-C46B-4865-88A6-092DA497810F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18BA3236-C46B-4865-88A6-092DA497810F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18BA3236-C46B-4865-88A6-092DA497810F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{741FA804-CD5D-4D80-A80B-DFAE9352E7BE} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
-		{77953304-3B3D-40F5-85E0-217E2482AAF2} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
+		{77953304-3B3D-40F5-85E0-217E2482AAF2} = {9A56C492-5322-47DB-A3A8-5C613CD9332F}
 		{1E228141-F273-4F6C-9258-F91D79EAA190} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
 		{18BA3236-C46B-4865-88A6-092DA497810F} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
+		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF} = {C27358CE-83A5-43EF-BFB2-BF0854BDB293}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C6DCB67-0487-46A0-9622-98AA830FC3C5}
