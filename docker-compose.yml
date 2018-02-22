@@ -25,6 +25,16 @@ services:
     networks:
      - backend
 
+  oauthserver:
+    image: oauthserver
+    build:
+      context: .
+      dockerfile: OAuthServer/Dockerfile
+    ports:
+      - "8183:80"
+    networks:
+      - backend
+
   redis:
     image: redis
     ports:
@@ -45,10 +55,3 @@ services:
       - "5673:5673"
     networks:
      - backend
-
-  oauthserver:
-    image: oauthserver
-    build:
-      context: .
-      dockerfile: ../OAuthServer/Dockerfile
-
