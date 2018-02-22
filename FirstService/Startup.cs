@@ -1,6 +1,7 @@
 ﻿using FirstService.Implementations;
 using FirstService.Repository;
 using FirstService.Repository.Implementations;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,16 @@ namespace FirstService
             services.AddScoped<IFirstBusiness, FirstBusiness>();
             services.AddScoped<ICacheBusiness, CacheBusiness>();
 
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://oauthserver/";
+                    options.ApiName = "socialnetwork";
+                    options.RequireHttpsMetadata = false;
+                });
+
             services.AddMvc();
+            
         }
 
         public virtual void ConfigureRedis(IServiceCollection services)
@@ -63,6 +73,8 @@ namespace FirstService
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
