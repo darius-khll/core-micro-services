@@ -1,6 +1,9 @@
 ﻿using FirstService.Repository.Implementations;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
@@ -27,10 +30,28 @@ namespace FirstService.Controllers
 
         public async Task<string> GetToken()
         {
-            var obj = new { client_id = "socialnetwork", username = "username", password = "password", client_secret = "secret", grant_type = "password" };
+            DiscoveryClient disClient = new DiscoveryClient("http://oauthserver/");
+            disClient.Policy.RequireHttps = false;
 
-            var res = await _httpService.PostAsync("http://oauthserver/connect/token", obj);
-            return res;
+            DiscoveryResponse disco = await disClient.GetAsync();
+            if (disco.IsError)
+                throw new Exception("invalid endponit");
+
+            TokenClient tokenClient = new TokenClient(disco.TokenEndpoint, "socialnetwork", "secret");
+
+            TokenResponse tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("username", "password", "socialnetwork");
+            //TokenResponse tokenResponse = await tokenClient.RequestClientCredentialsAsync("socialnetwork");
+
+            if (tokenResponse.IsError)
+                throw new Exception("invalid token");
+
+
+            HttpClient client = new HttpClient();
+            client.SetBearerToken(tokenResponse.AccessToken);
+            HttpResponseMessage response = await client.GetAsync("http://firstservice/home/valid");
+            string result = await response.Content.ReadAsStringAsync();
+
+            return result + " & token: " + tokenResponse.AccessToken;
         }
     }
 }
