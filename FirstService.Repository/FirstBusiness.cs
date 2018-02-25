@@ -1,4 +1,4 @@
-﻿using FirstService.Repository.Implementations;
+﻿using Common.Implementations;
 using System.Threading.Tasks;
 
 namespace FirstService.Repository
