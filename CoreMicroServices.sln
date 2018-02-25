@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecondService", "SecondServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthoriziationServer", "AuthoriziationServer", "{C27358CE-83A5-43EF-BFB2-BF0854BDB293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthServer", "OAuthServer\OAuthServer.csproj", "{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthServer", "OAuthServer\OAuthServer.csproj", "{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{C4817373-E0D2-4EE3-871E-47B5B454E867}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
