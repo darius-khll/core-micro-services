@@ -18,7 +18,7 @@ namespace OAuthServer
             //openssl pkcs12 -export -in socialnetwork.cer - inkey socialnetwok.key -out socialnetwork.pfx
             services.AddIdentityServer()
                 //.AddDeveloperSigningCredential()
-                .AddSigningCredential(new X509Certificate2(@"/app/socialnetwork.pfx", "password")) //password given from pfx file which genrated by cli
+                .AddSigningCredential(new X509Certificate2(@"socialnetwork.pfx", "password")) //password given from pfx file which genrated by cli
                 .AddTestUsers(InMemoryConfiguration.Users())
                 .AddInMemoryClients(InMemoryConfiguration.Clients())
                 .AddInMemoryApiResources(InMemoryConfiguration.ApiResources());
