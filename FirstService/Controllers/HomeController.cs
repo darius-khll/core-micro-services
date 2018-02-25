@@ -1,4 +1,4 @@
-﻿using FirstService.Repository.Implementations;
+﻿using Common.Implementations;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

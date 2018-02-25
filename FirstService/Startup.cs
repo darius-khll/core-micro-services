@@ -1,6 +1,6 @@
-﻿using FirstService.Implementations;
+﻿using Common.Implementations;
+using FirstService.Implementations;
 using FirstService.Repository;
-using FirstService.Repository.Implementations;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
