@@ -38,20 +38,20 @@ services:
   redis:
     image: redis
     ports:
-      - "6379:6379"
+      - "8184:6379"
     networks:
       - backend
 
   mongo:
     image: mongo
     ports: 
-      - "27017:27017"
+      - "8185:27017"
     networks:
       - backend
 
   rabbitmq:
     image: rabbitmq
     ports:
-      - "5673:5673"
+      - "8186:5673"
     networks:
      - backend
