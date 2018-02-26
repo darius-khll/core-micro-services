@@ -14,7 +14,7 @@ namespace FirstService.Repository
     public class CacheBusiness : ICacheBusiness
     {
         private readonly IDistributedCache _distributedCache;
-        private readonly string _key = "TheTime";
+        private const string _key = "TheTime";
 
         public CacheBusiness(IDistributedCache distributedCache)
         {
