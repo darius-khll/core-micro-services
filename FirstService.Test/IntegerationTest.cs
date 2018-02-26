@@ -45,5 +45,14 @@ namespace FirstService.Test
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("done", responseString);
         }
+
+        [Fact]
+        public async Task UserController_GetUser_ShouldReturnSomething()
+        {
+            var response = await _client.GetAsync($"/user/getuser");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("bbb", responseString);
+        }
     }
 }

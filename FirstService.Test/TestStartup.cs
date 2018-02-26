@@ -6,7 +6,7 @@ namespace FirstService.Test
 {
     public class TestStartup : Startup
     {
-        public static string _host = "localhost:5050";
+        public const string RediHost = "localhost:8184";
 
         public TestStartup(IConfiguration configuration) : base(configuration)
         {
@@ -14,14 +14,14 @@ namespace FirstService.Test
 
         public override void ConfigureRedis(IServiceCollection services)
         {
-            services.AddScoped(provider => ConnectionMultiplexer.Connect(TestStartup._host).GetDatabase());
+            services.AddScoped(provider => ConnectionMultiplexer.Connect(TestStartup.RediHost).GetDatabase());
         }
 
         public override void ConfigureDistributedCache(IServiceCollection services)
         {
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = TestStartup._host;
+                options.Configuration = TestStartup.RediHost;
                 options.InstanceName = "SampleInstance";
             });
         }
