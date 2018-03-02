@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FirstService.Controllers
 {
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly IHttpService _httpService;
@@ -16,11 +17,16 @@ namespace FirstService.Controllers
         {
             _httpService = httpService;
         }
+
+        [HttpGet]
+        [Route("Error")]
         public string Error()
         {
             return "Error happened!";
         }
 
+        [HttpGet]
+        [Route("Valid")]
         [Authorize]
         public string Valid()
         {
@@ -28,6 +34,9 @@ namespace FirstService.Controllers
             return "the user is authenticated";
         }
 
+        [HttpGet]
+        [Route("GetToken")]
+        [HttpGet]
         public async Task<string> GetToken()
         {
             DiscoveryClient disClient = new DiscoveryClient("http://oauthserver/");
