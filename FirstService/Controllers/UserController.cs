@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace FirstService.Controllers
 {
+    [Route("[controller]")]
     public class UserController : Controller
     {
         private readonly IFirstBusiness _firstBusiness;
@@ -14,6 +15,7 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
+        [Route(nameof(Index))]
         public async Task<string> Index()
         {
             string name = await _firstBusiness.UserHandlerAsync("aaa", "bbb");
@@ -21,6 +23,7 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
+        [Route(nameof(GetUser))]
         public async Task<string> GetUser()
         {
             string user = await _firstBusiness.UserTest("aaa", "bbb");

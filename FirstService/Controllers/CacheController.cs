@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace FirstService.Controllers
 {
+    [Route("[controller]")]
     public class CacheController : Controller
     {
         private readonly ICacheBusiness _cacheBusiness;
@@ -14,6 +15,7 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
+        [Route(nameof(Index))]
         public async Task<string> Index()
         {
             string result = await _cacheBusiness.CacheIfNotExist();
@@ -21,6 +23,7 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
+        [Route(nameof(Del))]
         public async Task<string> Del()
         {
             string result = await _cacheBusiness.RemoveCache();
