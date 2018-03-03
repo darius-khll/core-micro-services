@@ -1,17 +1,12 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Common.Implementations;
 using FirstService.Implementations;
-using FirstService.Repository;
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Net.Http;
 
 namespace FirstService
 {
@@ -34,27 +29,11 @@ namespace FirstService
             ConfigureRedis(services);
             ConfigureDistributedCache(services);
 
-            services.AddSingleton<HttpClient>();
-            services.AddSingleton<IHttpService, HttpService>();
-            services.AddScoped<IRedisRepository, RedisRepository>();
-            services.AddScoped<IFirstBusiness, FirstBusiness>();
-            builder.RegisterType<CacheBusiness>().As<ICacheBusiness>().InstancePerLifetimeScope();
-            //services.AddScoped<ICacheBusiness, CacheBusiness>();
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = "http://oauthserver/";
-                    options.ApiName = "socialnetwork";
-                    options.RequireHttpsMetadata = false;
-                });
+            services.GeneralServices();
+            builder.AutofacServices();
 
             services.AddMvc();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            services.AddSwaggerDocumentation();
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
@@ -91,20 +70,12 @@ namespace FirstService
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+
+            app.UseSwaggerDocumentation();
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
 
             appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
         }
