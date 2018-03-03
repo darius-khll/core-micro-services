@@ -1,4 +1,5 @@
 ﻿using Common.Implementations;
+using FirstService.Implementations;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,22 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
-        [Route("Error")]
-        public string Error()
+        [Route(nameof(Error))]
+        public string Error(int val)
         {
-            return "Error happened!";
+            return "Error happened! number: " + val;
         }
 
+        [HttpPost]
+        [Route(nameof(PostDdata))]
+        public string PostDdata(FirstModel model)
+        {
+            return model.Name;
+        }
+
+        //Authorization: Bearer token
         [HttpGet]
-        [Route("Valid")]
+        [Route(nameof(Valid))]
         [Authorize]
         public string Valid()
         {
@@ -35,7 +44,7 @@ namespace FirstService.Controllers
         }
 
         [HttpGet]
-        [Route("GetToken")]
+        [Route(nameof(GetToken))]
         [HttpGet]
         public async Task<string> GetToken()
         {
