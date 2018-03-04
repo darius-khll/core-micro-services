@@ -51,7 +51,9 @@ services:
 
   rabbitmq:
     image: rabbitmq
+    #command: /bin/bash -c "rabbitmq-plugins enable rabbitmq_management"
     ports:
-      - "8186:5673"
+      - "8186:5672"
+      - "8187:15672" #dashboard
     networks:
      - backend
