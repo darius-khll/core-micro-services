@@ -9,19 +9,21 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondService", "SecondService\SecondService.csproj", "{77953304-3B3D-40F5-85E0-217E2482AAF2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FirstService", "FirstService", "{A3529087-2738-4954-BDE8-F9B69C4FC761}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{A3529087-2738-4954-BDE8-F9B69C4FC761}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstService.Test", "FirstService.Test\FirstService.Test.csproj", "{1E228141-F273-4F6C-9258-F91D79EAA190}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstService.Repository", "FirstService.Repository\FirstService.Repository.csproj", "{18BA3236-C46B-4865-88A6-092DA497810F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecondService", "SecondService", "{9A56C492-5322-47DB-A3A8-5C613CD9332F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consumer", "Consumer", "{9A56C492-5322-47DB-A3A8-5C613CD9332F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthoriziationServer", "AuthoriziationServer", "{C27358CE-83A5-43EF-BFB2-BF0854BDB293}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthServer", "OAuthServer\OAuthServer.csproj", "{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{C4817373-E0D2-4EE3-871E-47B5B454E867}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{C4817373-E0D2-4EE3-871E-47B5B454E867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumerService", "ConsumerService\ConsumerService.csproj", "{866F3C3C-A930-471B-8E3C-3B6D0E9D2701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4817373-E0D2-4EE3-871E-47B5B454E867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866F3C3C-A930-471B-8E3C-3B6D0E9D2701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866F3C3C-A930-471B-8E3C-3B6D0E9D2701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866F3C3C-A930-471B-8E3C-3B6D0E9D2701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866F3C3C-A930-471B-8E3C-3B6D0E9D2701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{1E228141-F273-4F6C-9258-F91D79EAA190} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
 		{18BA3236-C46B-4865-88A6-092DA497810F} = {A3529087-2738-4954-BDE8-F9B69C4FC761}
 		{51B94FE6-8217-4FD7-A6DF-46D48ECC3ADF} = {C27358CE-83A5-43EF-BFB2-BF0854BDB293}
+		{866F3C3C-A930-471B-8E3C-3B6D0E9D2701} = {9A56C492-5322-47DB-A3A8-5C613CD9332F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C6DCB67-0487-46A0-9622-98AA830FC3C5}
