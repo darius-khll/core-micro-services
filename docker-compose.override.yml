@@ -7,13 +7,6 @@ services:
     ports:
       - "80"
 
-  secondservice:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
-
-
   oauthserver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
