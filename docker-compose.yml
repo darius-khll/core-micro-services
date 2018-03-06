@@ -15,11 +15,11 @@ services:
     networks:
      - backend
 
-  secondservice:
-    image: secondservice
+  consumerservice:
+    image: consumerservice
     build:
       context: .
-      dockerfile: SecondService/Dockerfile
+      dockerfile: ConsumerService/Dockerfile
     ports:
      - "8182:80"
     networks:
@@ -57,3 +57,4 @@ services:
       - "8187:15672" #dashboard
     networks:
      - backend
+
