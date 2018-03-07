@@ -1,10 +1,13 @@
 ﻿using Autofac;
 using Common.Implementations;
 using FirstService.Repository;
+using FirstService.Repository.Implementations;
 using IdentityServer4.AccessTokenValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Net.Http;
 
 namespace FirstService.Implementations
@@ -14,6 +17,32 @@ namespace FirstService.Implementations
         public static void AutofacServices(this ContainerBuilder builder)
         {
             builder.RegisterType<CacheBusiness>().As<ICacheBusiness>().InstancePerLifetimeScope();
+        }
+
+        public static IServiceCollection ServiceBus(this IServiceCollection services)
+        {
+            var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                var host = cfg.Host(new Uri("rabbitmq://rabbitmq/"), h =>
+                {
+                    //h.Username("guest");
+                    //h.Password("guest");
+                });
+            });
+
+            services.AddSingleton<IPublishEndpoint>(bus);
+            services.AddSingleton<ISendEndpointProvider>(bus);
+            services.AddSingleton<IBus>(bus);
+
+            var timeout = TimeSpan.FromSeconds(10);
+            var serviceAddress = new Uri("rabbitmq://rabbitmq/order-service");
+
+            services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x =>
+                new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
+
+            bus.Start();
+
+            return services;
         }
 
         public static IServiceCollection GeneralServices(this IServiceCollection services)
