@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FirstService.Implementations;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,8 @@ namespace FirstService
 
             services.AddMvc();
             services.AddSwaggerDocumentation();
+
+            services.ServiceBus();
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
