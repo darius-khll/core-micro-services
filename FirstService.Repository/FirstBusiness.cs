@@ -26,9 +26,7 @@ namespace FirstService.Repository
             await _redisRepository.SetUser(user, name);
             string foo = await _redisRepository.GetUser(user);
 
-            string content = await _http.GetStringAsync("http://secondService");
-
-            return string.Format($"First Service requested: {content} - {foo}");
+            return string.Format($"First Service requested: {foo}");
         }
 
         public async Task<string> UserTest(string user, string name)
