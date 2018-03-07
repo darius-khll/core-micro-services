@@ -20,8 +20,8 @@ services:
     build:
       context: .
       dockerfile: ConsumerService/Dockerfile
-    ports:
-     - "8182:80"
+    #ports:
+    # - "8182:80"
     networks:
      - backend
 
