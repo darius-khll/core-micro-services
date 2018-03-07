@@ -1,10 +1,14 @@
 ﻿using Common.Implementations;
 using FirstService.Implementations;
+using FirstService.Repository.Implementations;
 using IdentityModel.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
@@ -13,10 +17,20 @@ namespace FirstService.Controllers
     public class HomeController : Controller
     {
         private readonly IHttpService _httpService;
+        private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
 
-        public HomeController(IHttpService httpService)
+        public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient)
         {
             _httpService = httpService;
+            _requestClient = requestClient;
+        }
+
+        [HttpGet]
+        [Route(nameof(AddToServiceBus))]
+        public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
+        {
+            OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
+            return result.OrderId;
         }
 
         [HttpGet]
