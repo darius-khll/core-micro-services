@@ -54,7 +54,7 @@ namespace FirstService.Test
             var response = await _client.GetAsync($"{FirstService}/user/index");
 
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Contains("First Service requested: Second Service respond a user named: abc1 - bbb", responseString);
+            Assert.Contains("First Service requested: bbb", responseString);
         }
 
         [Fact]
