@@ -9,11 +9,20 @@ namespace ConsumerService
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
+        {
+            Rabbitmq().GetAwaiter().GetResult();
+        }
+
+        static async Task Rabbitmq()
         {
             var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
-                var host = cfg.Host(new Uri("rabbitmq://rabbitmq/"), h => { });
+                var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
+                {
+                    //h.Username("guest");
+                    //h.Password("guest");
+                });
 
                 cfg.ReceiveEndpoint(host, "order-service", e =>
                 {
@@ -28,7 +37,6 @@ namespace ConsumerService
             try
             {
                 Console.WriteLine("Working....");
-
                 Console.ReadLine();
             }
             catch (Exception e)
