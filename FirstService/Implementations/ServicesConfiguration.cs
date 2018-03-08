@@ -19,23 +19,28 @@ namespace FirstService.Implementations
             builder.RegisterType<CacheBusiness>().As<ICacheBusiness>().InstancePerLifetimeScope();
         }
 
-        public static IServiceCollection ServiceBus(this IServiceCollection services)
+        public static IBusControl ServiceBus(this IServiceCollection services)
         {
             var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
-                var host = cfg.Host(new Uri("rabbitmq://rabbitmq/"), h =>
+                var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
                 {
                     //h.Username("guest");
                     //h.Password("guest");
                 });
             });
 
+            return bus;
+        }
+
+        public static IServiceCollection ConfigureBus(this IServiceCollection services, IBusControl bus)
+        {
             services.AddSingleton<IPublishEndpoint>(bus);
             services.AddSingleton<ISendEndpointProvider>(bus);
             services.AddSingleton<IBus>(bus);
 
             var timeout = TimeSpan.FromSeconds(10);
-            var serviceAddress = new Uri("rabbitmq://rabbitmq/order-service");
+            var serviceAddress = new Uri("rabbitmq://rabbitmq:5672/order-service");
 
             services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x =>
                 new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
