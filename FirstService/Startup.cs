@@ -36,12 +36,19 @@ namespace FirstService
             services.AddMvc();
             services.AddSwaggerDocumentation();
 
-            services.ServiceBus();
+            var bus = ConfigureRabbitmqHost(services);
+            services.ConfigureBus(bus);
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
             return new AutofacServiceProvider(ApplicationContainer);
 
+        }
+
+        public virtual IBusControl ConfigureRabbitmqHost(IServiceCollection services)
+        {
+            var bus = services.ServiceBus();
+            return bus;
         }
 
         public virtual void ConfigureRedis(IServiceCollection services)
