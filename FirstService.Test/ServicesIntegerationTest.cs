@@ -66,5 +66,14 @@ namespace FirstService.Test
             Assert.Contains("done", responseString);
         }
 
+        [Fact]
+        public async Task AddToServiceBusInHomeControllerShouldReturnCorrectValue()
+        {
+            var response = await _client.GetAsync($"{FirstService}/home/AddToServiceBus");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            Assert.Contains("123", responseString);
+        }
+
     }
 }
