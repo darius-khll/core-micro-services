@@ -1,9 +1,9 @@
 version: '3'
 
 networks:
-  default:
-    external:
-      name: nat
+  #default:
+  #  external:
+  #    name: nat
   backend:
 
 services:
@@ -16,7 +16,7 @@ services:
      - "8181:80"
     networks:
      - backend
-    #restart: always
+    restart: always
     depends_on:
       - "rabbitmq"
       - "redis"
