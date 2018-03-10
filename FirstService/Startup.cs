@@ -36,8 +36,8 @@ namespace FirstService
             services.AddMvc();
             services.AddSwaggerDocumentation();
 
-            var bus = ConfigureRabbitmqHost(services);
-            services.ConfigureBus(bus);
+            //var bus = ConfigureRabbitmqHost(services);
+            //services.ConfigureBus(bus);
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
