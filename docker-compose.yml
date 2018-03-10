@@ -13,7 +13,7 @@ services:
      - "8181:80"
     networks:
      - backend
-    restart: always
+    #restart: always
     depends_on:
       - "rabbitmq"
       - "redis"
@@ -25,7 +25,7 @@ services:
       dockerfile: ConsumerService/Dockerfile
     networks:
      - backend
-    restart: always
+    #restart: always
     depends_on:
       - "rabbitmq"
       - "mongo"
