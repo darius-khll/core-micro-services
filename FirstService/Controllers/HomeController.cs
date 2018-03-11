@@ -17,25 +17,25 @@ namespace FirstService.Controllers
     public class HomeController : Controller
     {
         private readonly IHttpService _httpService;
-        //private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
-        //public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient)
-        //{
-        //    _httpService = httpService;
-        //    _requestClient = requestClient;
-        //}
-
-        public HomeController(IHttpService httpService)
+        private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
+        public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient)
         {
             _httpService = httpService;
+            _requestClient = requestClient;
         }
 
-        //[HttpGet]
-        //[Route(nameof(AddToServiceBus))]
-        //public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
+        //public HomeController(IHttpService httpService)
         //{
-        //    OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
-        //    return result.OrderId;
+        //    _httpService = httpService;
         //}
+
+        [HttpGet]
+        [Route(nameof(AddToServiceBus))]
+        public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
+        {
+            OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
+            return result.OrderId;
+        }
 
         [HttpGet]
         [Route(nameof(Error))]
