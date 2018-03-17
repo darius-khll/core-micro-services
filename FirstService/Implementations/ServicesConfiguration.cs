@@ -25,8 +25,8 @@ namespace FirstService.Implementations
             {
                 var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
                 {
-                    //h.Username("guest");
-                    //h.Password("guest");
+                    h.Username("user");
+                    h.Password("password");
                 });
             });
 
