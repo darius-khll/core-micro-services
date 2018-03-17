@@ -20,8 +20,8 @@ namespace ConsumerService
             {
                 var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
                 {
-                    //h.Username("guest");
-                    //h.Password("guest");
+                    h.Username("user");
+                    h.Password("password");
                 });
 
                 cfg.ReceiveEndpoint(host, "order-service", e =>
