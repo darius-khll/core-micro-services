@@ -64,8 +64,10 @@ services:
      - RABBITMQ_DEFAULT_USER=user
      - RABBITMQ_DEFAULT_PASS=password
      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
-    volumes:
-      - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+     - RABBITMQ_NODENAME=rabbitmq
+    #volumes:
+    #  - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    hostname: "rabbitmq"
     ports:
       - "5672:5672"
       - "8187:15672" #dashboard
