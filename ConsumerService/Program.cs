@@ -33,9 +33,9 @@ namespace ConsumerService
                 });
             });
 
-            await bus.StartAsync();
             try
             {
+                await bus.StartAsync();
                 Console.WriteLine("Working....");
                 Console.ReadLine();
             }
@@ -45,7 +45,7 @@ namespace ConsumerService
             }
             finally
             {
-                await bus.StopAsync();
+                //await bus.StopAsync();
             }
         }
 
