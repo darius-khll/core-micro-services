@@ -39,6 +39,14 @@ namespace ConsumerService
                         await Task.Delay(5000);
                     });
                 });
+
+                cfg.ReceiveEndpoint(host, "data-added", e =>
+                {
+                    e.Handler<IPubSub>(async context =>
+                    {
+                        await Task.Delay(5000);
+                    });
+                });
             });
 
             try
