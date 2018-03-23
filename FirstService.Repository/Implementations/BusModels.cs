@@ -13,4 +13,13 @@ namespace FirstService.Repository.Implementations
     {
         string OrderId { get; }
     }
+
+    public interface IPubSub
+    {
+        string Message { get; set; }
+    }
+    public class PubSub : IPubSub
+    {
+        public string Message { get; set; }
+    }
 }
