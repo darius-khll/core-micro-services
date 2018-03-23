@@ -18,10 +18,14 @@ namespace FirstService.Controllers
     {
         private readonly IHttpService _httpService;
         private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
-        public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient)
+        private readonly IBus _bus;
+
+        public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient,
+            IBus bus)
         {
             _httpService = httpService;
             _requestClient = requestClient;
+            _bus = bus;
         }
 
         //public HomeController(IHttpService httpService)
@@ -33,6 +37,7 @@ namespace FirstService.Controllers
         [Route(nameof(AddToServiceBus))]
         public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
         {
+            await _bus.Publish<IPubSub>(new PubSub { Message = "send message" });
             OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
             return result.OrderId;
         }
