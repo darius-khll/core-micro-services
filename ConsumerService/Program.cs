@@ -31,6 +31,14 @@ namespace ConsumerService
                         context.Message.OrderId
                     }));
                 });
+
+                cfg.ReceiveEndpoint(host, "pub-sub", e =>
+                {
+                    e.Handler<IPubSub>(async context =>
+                    {
+                        await Task.Delay(5000);
+                    });
+                });
             });
 
             try
