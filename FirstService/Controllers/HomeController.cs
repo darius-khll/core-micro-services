@@ -28,16 +28,14 @@ namespace FirstService.Controllers
             _bus = bus;
         }
 
-        //public HomeController(IHttpService httpService)
-        //{
-        //    _httpService = httpService;
-        //}
-
         [HttpGet]
         [Route(nameof(AddToServiceBus))]
         public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
         {
             await _bus.Publish<IPubSub>(new PubSub { Message = "send message" });
+            var endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://rabbitmq:5672/data-added"));
+            await endpoint.Send<IPubSub>(new PubSub { Message = "data passed" });
+
             OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
             return result.OrderId;
         }
