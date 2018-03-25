@@ -1,8 +1,12 @@
-﻿using FirstService.Repository.Implementations;
+﻿using Autofac;
+using Common.Implementations;
+using GreenPipes;
 using MassTransit;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ConsumerService
@@ -16,42 +20,48 @@ namespace ConsumerService
 
         static async Task Rabbitmq()
         {
-            var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
+            builder.RegisterType<HttpService>().As<IHttpService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<DataAddedConsumer>();
+            builder.RegisterType<PubSubConsumer>();
+            builder.RegisterType<SubmitOrderConsumer>();
+
+
+            builder.RegisterConsumers(Assembly.GetExecutingAssembly());
+            builder.Register(context =>
             {
-                var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
+                var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
                 {
-                    h.Username("user");
-                    h.Password("password");
-                });
-
-                cfg.ReceiveEndpoint(host, "order-service", e =>
-                {
-                    e.Handler<SubmitOrder>(context => context.RespondAsync<OrderAccepted>(new
+                    var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
                     {
-                        context.Message.OrderId
-                    }));
-                });
-
-                cfg.ReceiveEndpoint(host, "pub-sub", e =>
-                {
-                    e.Handler<IPubSub>(async context =>
+                        h.Username("user");
+                        h.Password("password");
+                    });
+                    cfg.ReceiveEndpoint(host, "order-service", e => e.Consumer<SubmitOrderConsumer>(context));
+                    cfg.ReceiveEndpoint(host, "pub-sub", e => e.Consumer<PubSubConsumer>(context));
+                    cfg.ReceiveEndpoint(host, "data-added", e =>
                     {
-                        await Task.Delay(5000);
+                        e.UseRetry(r => r.Immediate(5)); //retry 5times if exception happens
+                        e.Consumer<DataAddedConsumer>(context);
+                        e.Consumer<DataAddedFaultConsumer>(context); //when something bad happens
                     });
                 });
 
-                cfg.ReceiveEndpoint(host, "data-added", e =>
-                {
-                    e.Handler<IPubSub>(async context =>
-                    {
-                        await Task.Delay(5000);
-                    });
-                });
-            });
+                return bus;
+            })
+                .SingleInstance()
+                .As<IBusControl>()
+                .As<IBus>();
+
+            var container = builder.Build();
+            var bc = container.Resolve<IBusControl>();
 
             try
             {
-                await bus.StartAsync();
+                await bc.StartAsync();
                 Console.WriteLine("Working....");
                 Console.ReadLine();
             }
@@ -61,7 +71,7 @@ namespace ConsumerService
             }
             finally
             {
-                //await bus.StopAsync();
+                //await bc.StopAsync();
             }
         }
 
