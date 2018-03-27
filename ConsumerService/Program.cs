@@ -22,6 +22,12 @@ namespace ConsumerService
         {
             var builder = new ContainerBuilder();
 
+            //"mongodb://user:password@localhost"
+            builder.Register(ctx =>
+            {
+                return new MongoClient("mongodb://mongo");
+            }).As<IMongoClient>();
+
             builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
             builder.RegisterType<HttpService>().As<IHttpService>().InstancePerLifetimeScope();
 
@@ -40,6 +46,7 @@ namespace ConsumerService
                         h.Username("user");
                         h.Password("password");
                     });
+
                     cfg.ReceiveEndpoint(host, "order-service", e => e.Consumer<SubmitOrderConsumer>(context));
                     cfg.ReceiveEndpoint(host, "pub-sub", e => e.Consumer<PubSubConsumer>(context));
                     cfg.ReceiveEndpoint(host, "data-added", e =>
@@ -78,7 +85,7 @@ namespace ConsumerService
         async Task Mongo()
         {
             //"mongodb://user:password@localhost"
-            MongoClient client = new MongoClient("mongodb://mongo"); //The client handles and dispose it automatically
+            IMongoClient client = new MongoClient("mongodb://mongo"); //The client handles and dispose it automatically
             IMongoDatabase db = client.GetDatabase("secondDb");
 
             await db.GetCollection<User>("Users").InsertOneAsync(new User { Name = "abc1", Age = 10 });
