@@ -8,22 +8,18 @@ namespace ConsumerService
 {
     public class PubSubConsumer : IConsumer<IPubSub>
     {
-        public IMongoClient _mongoClient { get; }
+        public IMongoDatabase _mongoDb { get; }
 
-        public PubSubConsumer(IMongoClient mongoClient)
+        public PubSubConsumer(IMongoDatabase mongoDb)
         {
-            _mongoClient = mongoClient;
+            _mongoDb = mongoDb;
         }
 
         public async Task Consume(ConsumeContext<IPubSub> context)
         {
-            IMongoDatabase db = _mongoClient.GetDatabase("secondDb");
+            await _mongoDb.GetCollection<User>("Users").InsertOneAsync(new User { Name = "abc1", Age = 10 });
 
-            await db.GetCollection<User>("Users").InsertOneAsync(new User { Name = "abc1", Age = 10 });
-
-            List<User> users = (await db.GetCollection<User>("Users").FindAsync(c => c.Name == "abc1")).ToList();
-
-            await Task.Delay(5000);
+            List<User> users = (await _mongoDb.GetCollection<User>("Users").FindAsync(c => c.Name == "abc1")).ToList();
         }
     }
 }
