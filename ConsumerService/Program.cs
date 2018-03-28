@@ -25,8 +25,8 @@ namespace ConsumerService
             //"mongodb://user:password@localhost"
             builder.Register(ctx =>
             {
-                return new MongoClient("mongodb://mongo");
-            }).As<IMongoClient>();
+                return new MongoClient("mongodb://mongo").GetDatabase("secondDb");
+            }).As<IMongoDatabase>();
 
             builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
             builder.RegisterType<HttpService>().As<IHttpService>().InstancePerLifetimeScope();
