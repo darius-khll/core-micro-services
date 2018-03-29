@@ -5,6 +5,7 @@ using IdentityModel.Client;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -19,13 +20,15 @@ namespace FirstService.Controllers
         private readonly IHttpService _httpService;
         private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
         private readonly IBus _bus;
+        private IOptions<RabbitmqOptions> _rabbitmqOptions { get; }
 
         public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient,
-            IBus bus)
+            IBus bus,  IOptions<RabbitmqOptions> rabbitmqOptions)
         {
             _httpService = httpService;
             _requestClient = requestClient;
             _bus = bus;
+            _rabbitmqOptions = rabbitmqOptions;
         }
 
         [HttpGet]
@@ -33,7 +36,7 @@ namespace FirstService.Controllers
         public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
         {
             await _bus.Publish<IPubSub>(new PubSub { Message = "send message" });
-            var endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://rabbitmq:5672/data-added"));
+            var endpoint = await _bus.GetSendEndpoint(new Uri($"rabbitmq://{_rabbitmqOptions.Value.host}/data-added"));
             await endpoint.Send<IPubSub>(new PubSub { Message = "data passed" });
 
             OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);

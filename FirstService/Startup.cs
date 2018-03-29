@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Common.Implementations;
 using FirstService.Implementations;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -26,18 +27,20 @@ namespace FirstService
             var builder = new ContainerBuilder(); //Autofac
 
             services.Configure<RedisOptions>(Configuration.GetSection("redis"));
+            services.Configure<RedisOptions>(Configuration.GetSection("rabbitmq"));
+            services.Configure<MongoOptions>(Configuration.GetSection("mongo"));
 
             ConfigureRedis(services);
             ConfigureDistributedCache(services);
 
-            services.GeneralServices();
+            services.GeneralServices(Configuration);
             builder.AutofacServices();
 
             services.AddMvc();
             services.AddSwaggerDocumentation();
 
             var bus = ConfigureRabbitmqHost(services);
-            services.ConfigureBus(bus);
+            services.ConfigureBus(bus, Configuration);
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
@@ -47,20 +50,21 @@ namespace FirstService
 
         public virtual IBusControl ConfigureRabbitmqHost(IServiceCollection services)
         {
-            var bus = services.ServiceBus();
+            var bus = services.ServiceBus(Configuration);
             return bus;
         }
 
         public virtual void ConfigureRedis(IServiceCollection services)
         {
-            string redisHost = Configuration["redis:host"];
+            string redisHost = Configuration[$"{RedisOptions.GetConfigName}:{nameof(RedisOptions.host)}"];
+
             services.AddScoped(provider => ConnectionMultiplexer.Connect(redisHost).GetDatabase());
         }
 
         public virtual void ConfigureDistributedCache(IServiceCollection services)
         {
-            string redisHost = Configuration["redis:host"];
-            string redisName = Configuration["redis:name"];
+            string redisHost = Configuration[$"{RedisOptions.GetConfigName}:{nameof(RedisOptions.host)}"];
+            string redisName = Configuration[$"{RedisOptions.GetConfigName}:{nameof(RedisOptions.name)}"];
 
             services.AddDistributedRedisCache(options =>
             {

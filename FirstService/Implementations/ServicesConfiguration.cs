@@ -5,6 +5,7 @@ using FirstService.Repository.Implementations;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -19,28 +20,34 @@ namespace FirstService.Implementations
             builder.RegisterType<CacheBusiness>().As<ICacheBusiness>().InstancePerLifetimeScope();
         }
 
-        public static IBusControl ServiceBus(this IServiceCollection services)
+        public static IBusControl ServiceBus(this IServiceCollection services, IConfiguration Configuration)
         {
+            string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
+            string user = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.user)}"];
+            string password = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.password)}"];
+
             var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
-                var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
+                var host = cfg.Host(new Uri($"rabbitmq://{rabbitmqHost}/"), h =>
                 {
-                    h.Username("user");
-                    h.Password("password");
+                    h.Username(user);
+                    h.Password(password);
                 });
             });
 
             return bus;
         }
 
-        public static IServiceCollection ConfigureBus(this IServiceCollection services, IBusControl bus)
+        public static IServiceCollection ConfigureBus(this IServiceCollection services, IBusControl bus, IConfiguration Configuration)
         {
             services.AddSingleton<IPublishEndpoint>(bus);
             services.AddSingleton<ISendEndpointProvider>(bus);
             services.AddSingleton<IBus>(bus);
 
+            string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
+
             var timeout = TimeSpan.FromSeconds(10);
-            var serviceAddress = new Uri("rabbitmq://rabbitmq:5672/order-service");
+            var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/order-service");
 
             services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x =>
                 new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
@@ -50,8 +57,10 @@ namespace FirstService.Implementations
             return services;
         }
 
-        public static IServiceCollection GeneralServices(this IServiceCollection services)
+        public static IServiceCollection GeneralServices(this IServiceCollection services, IConfiguration Configuration)
         {
+            string oauthHost = Configuration[$"{OAuthOptions.GetConfigName}:{nameof(OAuthOptions.host)}"];
+
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IRedisRepository, RedisRepository>();
@@ -60,7 +69,7 @@ namespace FirstService.Implementations
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://oauthserver/";
+                    options.Authority = $"http://{oauthHost}/";
                     options.ApiName = "socialnetwork";
                     options.RequireHttpsMetadata = false;
                 });
