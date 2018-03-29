@@ -9,6 +9,7 @@
     <DockerServiceName>firstservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose.local.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

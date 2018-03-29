@@ -1,0 +1,38 @@
+version: '3'
+
+networks:
+  backend:
+
+services:
+  redis:
+    image: redis
+    ports:
+      - "8184:6379"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    ports: 
+      - "8185:27017"
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    #command: /bin/bash -c "rabbitmq-server && rabbitmq-plugins enable rabbitmq_management"
+    environment:
+     - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+     - RABBITMQ_DEFAULT_USER=user
+     - RABBITMQ_DEFAULT_PASS=password
+     - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+     - RABBITMQ_NODENAME=rabbitmq
+    #volumes:
+    #  - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    hostname: "rabbitmq"
+    ports:
+      - "5672:5672"
+      - "8187:15672" #dashboard
+    networks:
+     - backend
+
