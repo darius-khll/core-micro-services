@@ -2,9 +2,10 @@
 using Common.Implementations;
 using GreenPipes;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,17 +16,30 @@ namespace ConsumerService
     {
         static void Main(string[] args)
         {
-            Rabbitmq().GetAwaiter().GetResult();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            Console.WriteLine(configuration["redis:host"]);
+
+            Rabbitmq(configuration).GetAwaiter().GetResult();
         }
 
-        static async Task Rabbitmq()
+        static async Task Rabbitmq(IConfigurationRoot configuration)
         {
             var builder = new ContainerBuilder();
+
+            string mongoHost = configuration[$"{MongoOptions.GetConfigName}:{nameof(MongoOptions.host)}"];
+            string rabbitHost = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
+            string rabbitUser = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.user)}"];
+            string rabbitPassword = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.password)}"];
 
             //"mongodb://user:password@localhost"
             builder.Register(ctx =>
             {
-                return new MongoClient("mongodb://mongo").GetDatabase("secondDb");
+                return new MongoClient($"mongodb://{mongoHost}").GetDatabase("secondDb");
             }).As<IMongoDatabase>();
 
             builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
@@ -41,10 +55,10 @@ namespace ConsumerService
             {
                 var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
                 {
-                    var host = cfg.Host(new Uri("rabbitmq://rabbitmq:5672/"), h =>
+                    var host = cfg.Host(new Uri($"rabbitmq://{rabbitHost}/"), h =>
                     {
-                        h.Username("user");
-                        h.Password("password");
+                        h.Username(rabbitUser);
+                        h.Password(rabbitPassword);
                     });
 
                     cfg.ReceiveEndpoint(host, "order-service", e => e.Consumer<SubmitOrderConsumer>(context));
@@ -80,18 +94,6 @@ namespace ConsumerService
             {
                 //await bc.StopAsync();
             }
-        }
-
-        async Task Mongo()
-        {
-            //"mongodb://user:password@localhost"
-            IMongoClient client = new MongoClient("mongodb://mongo"); //The client handles and dispose it automatically
-            IMongoDatabase db = client.GetDatabase("secondDb");
-
-            await db.GetCollection<User>("Users").InsertOneAsync(new User { Name = "abc1", Age = 10 });
-            List<User> users = (await db.GetCollection<User>("Users").FindAsync(c => c.Name == "abc1")).ToList();
-
-            Console.WriteLine(users[0].Name);
         }
     }
 }
