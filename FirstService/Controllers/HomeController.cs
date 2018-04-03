@@ -12,10 +12,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Filters;
 
 namespace FirstService.Controllers
 {
-    [Route("[controller]")]
+    [CustomRoute]
     public class HomeController : Controller
     {
         private readonly IHttpService _httpService;

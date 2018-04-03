@@ -5,7 +5,7 @@ using Common.Filters;
 
 namespace FirstService.Controllers
 {
-    [Route("[controller]")]
+    [CustomRoute]
     public class CacheController : Controller
     {
         private readonly ICacheBusiness _cacheBusiness;

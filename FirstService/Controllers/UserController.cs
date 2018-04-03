@@ -1,10 +1,11 @@
-﻿using FirstService.Repository;
+﻿using Common.Filters;
+using FirstService.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
 {
-    [Route("[controller]")]
+    [CustomRoute]
     public class UserController : Controller
     {
         private readonly IFirstBusiness _firstBusiness;
