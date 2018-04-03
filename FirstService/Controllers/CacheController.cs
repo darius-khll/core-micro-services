@@ -1,6 +1,7 @@
 ﻿using FirstService.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Common.Filters;
 
 namespace FirstService.Controllers
 {
@@ -28,6 +29,15 @@ namespace FirstService.Controllers
         {
             string result = await _cacheBusiness.RemoveCache();
             return result;
+        }
+
+        [HttpGet]
+        [Route(nameof(CacheSample))]
+        //[ServiceFilter(typeof(RedisCachingAttribute))] => it needs to added RedisCachingAttribute to DI services too (per scope)
+        [TypeFilter(typeof(RedisCachingAttribute), Arguments = new object[] { "my value" })] // it does not need to added to DI container 
+        public async Task<string> CacheSample()
+        {
+            return await Task.FromResult("1");
         }
     }
 }
