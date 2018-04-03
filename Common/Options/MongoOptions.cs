@@ -1,4 +1,4 @@
-﻿namespace Common.Implementations
+﻿namespace Common.Options
 {
     public class MongoOptions : ISettingOptions
     {

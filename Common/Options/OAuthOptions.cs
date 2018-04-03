@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Common.Implementations
+﻿namespace Common.Options
 {
     public class OAuthOptions : ISettingOptions
     {

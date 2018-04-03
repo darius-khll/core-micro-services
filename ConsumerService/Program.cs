@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Common.Options;
 using Common.Implementations;
 using GreenPipes;
 using MassTransit;

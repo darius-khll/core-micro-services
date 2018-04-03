@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Common.Implementations;
+using Common.Options;
 using FirstService.Implementations;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
