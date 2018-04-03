@@ -11,7 +11,7 @@ namespace FirstService.Test
     {
         //private readonly TestServer _server;
         private readonly HttpClient _client;
-        const string FirstService = "http://localhost:8181";
+        const string FirstService = "http://localhost:8181/api";
 
         public ServicesIntegerationTest()
         {

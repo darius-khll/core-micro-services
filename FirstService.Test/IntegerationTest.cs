@@ -29,7 +29,7 @@ namespace FirstService.Test
         [Fact]
         public async Task ErrorPageShouldReturnSomething()
         {
-            var response = await _client.GetAsync($"/home/error");
+            var response = await _client.GetAsync($"/api/home/error");
 
             //Remove EnsureSuccessStatusCode to see error in html
             //response.EnsureSuccessStatusCode();
@@ -40,7 +40,7 @@ namespace FirstService.Test
         [Fact]
         public async Task CacheController_Remove_ShouldReturnDone()
         {
-            var response = await _client.GetAsync($"/cache/del");
+            var response = await _client.GetAsync($"/api/cache/del");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("done", responseString);
@@ -49,7 +49,7 @@ namespace FirstService.Test
         [Fact]
         public async Task UserController_GetUser_ShouldReturnSomething()
         {
-            var response = await _client.GetAsync($"/user/getuser");
+            var response = await _client.GetAsync($"/api/user/getuser");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("bbb", responseString);
