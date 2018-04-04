@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using FirstService.Repository.Implementations;
+using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Threading.Tasks;
 
@@ -13,17 +14,17 @@ namespace FirstService.Repository
 
     public class CacheBusiness : ICacheBusiness
     {
-        private readonly IDistributedCache _distributedCache;
+        private readonly IRedisCaching<string> _redisCaching;
         private const string _key = "TheTime";
 
-        public CacheBusiness(IDistributedCache distributedCache)
+        public CacheBusiness(IRedisCaching<string> distributedCache)
         {
-            _distributedCache = distributedCache;
+            _redisCaching = distributedCache;
         }
 
         public async Task<string> CacheIfNotExist()
         {
-            var existingTime = await _distributedCache.GetStringAsync(_key);
+            var existingTime = await _redisCaching.GetCachedData(_key);
             if (!string.IsNullOrEmpty(existingTime))
             {
                 return "Fetched from cache : " + existingTime;
@@ -31,14 +32,14 @@ namespace FirstService.Repository
             else
             {
                 existingTime = DateTime.UtcNow.ToString();
-                await _distributedCache.SetStringAsync(_key, existingTime);
+                await _redisCaching.SetCachedData(_key, existingTime);
                 return "Added to cache : " + existingTime;
             }
         }
 
         public async Task<string> RemoveCache()
         {
-            await _distributedCache.SetStringAsync(_key, "");
+            await _redisCaching.SetCachedData(_key, "");
             return "done";
         }
     }
