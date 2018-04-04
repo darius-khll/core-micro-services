@@ -78,7 +78,7 @@ namespace FirstService
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/api/Home/Error");
 
             app.UseSwaggerDocumentation();
 

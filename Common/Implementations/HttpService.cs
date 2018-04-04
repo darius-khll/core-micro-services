@@ -27,6 +27,13 @@ namespace Common.Implementations
             return result;
         }
 
+        public async Task<T> GetObjectAsync<T>(string uri) where T : class
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(uri);
+            T obj = JsonConvert.DeserializeObject<T>(await  response.Content.ReadAsStringAsync());
+            return obj;
+        }
+
         public async Task<string> PostAsync(string uri, object obj)
         {
             string json = JsonConvert.SerializeObject(obj);
