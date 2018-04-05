@@ -2,9 +2,9 @@
 {
     public class OAuthOptions : ISettingOptions
     {
-        public string host { get; } = "localhost:8183";
-        public string name { get; }
-        public int port { get; } = 8183;
+        public string host { get; set; }
+        public string name { get; set; }
+        public int port { get; set; }
 
         public static string GetConfigName => "oauth";
     }

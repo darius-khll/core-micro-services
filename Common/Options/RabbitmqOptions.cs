@@ -2,12 +2,12 @@
 {
     public class RabbitmqOptions : ISettingOptions
     {
-        public string host { get; } = "localhost:5672";
-        public string name { get; }
-        public int port { get; } = 5672;
+        public string host { get; set; }
+        public string name { get; set; }
+        public int port { get; set; }
 
-        public string user { get; }
-        public string password { get; }
+        public string user { get; set; }
+        public string password { get; set; }
 
         public static string GetConfigName => "rabbitmq";
     }
