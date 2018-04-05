@@ -1,5 +1,8 @@
 version: '3'
 
+#run with docker-compose.override to handle Production environment
+#docker-compose -f docker-compose.yml -f .\docker-compose.override.yml up --build
+
 networks:
   backend:
 
@@ -15,8 +18,6 @@ services:
     networks:
      - backend
     #restart: always
-    environment:
-    - ASPNETCORE_ENVIRONMENT='Production'
     depends_on:
       - "rabbitmq"
       - "redis"
@@ -30,8 +31,6 @@ services:
     networks:
      - backend
     #restart: always
-    environment:
-    - ASPNETCORE_ENVIRONMENT='Production'
     depends_on:
       - "rabbitmq"
       - "mongo"

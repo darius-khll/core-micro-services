@@ -3,13 +3,16 @@ version: '3'
 services:
   firstservice:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "80"
 
   oauthserver:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "80"
 
+  consumerservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
