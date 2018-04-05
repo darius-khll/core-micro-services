@@ -7,17 +7,15 @@ namespace FirstService.Repository
     {
         Task<string> UserHandlerAsync(string user, string name);
         int Sum(int a, int b);
-        Task<string> UserTest(string user, string name);
     }
+
 
     public class FirstBusiness : IFirstBusiness
     {
-        private readonly IHttpService _http;
         private readonly IRedisRepository _redisRepository;
 
-        public FirstBusiness(IHttpService http, IRedisRepository redisRepository)
+        public FirstBusiness(IRedisRepository redisRepository)
         {
-            _http = http;
             _redisRepository = redisRepository;
         }
 
@@ -26,14 +24,7 @@ namespace FirstService.Repository
             await _redisRepository.SetUser(user, name);
             string foo = await _redisRepository.GetUser(user);
 
-            return string.Format($"First Service requested: {foo}");
-        }
-
-        public async Task<string> UserTest(string user, string name)
-        {
-            await _redisRepository.SetUser(user, name);
-            string foo = await _redisRepository.GetUser(user);
-            return foo;
+            return string.Format($"{foo}");
         }
 
         public int Sum(int a, int b)

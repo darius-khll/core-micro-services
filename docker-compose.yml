@@ -14,7 +14,9 @@ services:
     entrypoint: bash -c "sleep 20 && dotnet FirstService.dll"
     networks:
      - backend
-    restart: always
+    #restart: always
+    environment:
+    - ASPNETCORE_ENVIRONMENT='Production'
     depends_on:
       - "rabbitmq"
       - "redis"
@@ -27,7 +29,9 @@ services:
     entrypoint: bash -c "sleep 20 && dotnet ConsumerService.dll"
     networks:
      - backend
-    restart: always
+    #restart: always
+    environment:
+    - ASPNETCORE_ENVIRONMENT='Production'
     depends_on:
       - "rabbitmq"
       - "mongo"

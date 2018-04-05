@@ -19,31 +19,16 @@ namespace FirstService.Controllers
     [CustomRoute]
     public class HomeController : Controller
     {
-        private readonly IHttpService _httpService;
-        private readonly IRequestClient<SubmitOrder, OrderAccepted> _requestClient;
-        private readonly IBus _bus;
-        private IOptions<RabbitmqOptions> _rabbitmqOptions { get; }
+        private readonly OAuthOptions _oauthOptions;
 
-        public HomeController(IHttpService httpService, IRequestClient<SubmitOrder, OrderAccepted> requestClient,
-            IBus bus,  IOptions<RabbitmqOptions> rabbitmqOptions)
+        public FirstServiceOptions _firstOptions { get; }
+
+        public HomeController(IOptions<OAuthOptions> oauthOptions, IOptions<FirstServiceOptions> firstOptions)
         {
-            _httpService = httpService;
-            _requestClient = requestClient;
-            _bus = bus;
-            _rabbitmqOptions = rabbitmqOptions;
+            _oauthOptions = oauthOptions.Value;
+            _firstOptions = firstOptions.Value;
         }
-
-        [HttpGet]
-        [Route(nameof(AddToServiceBus))]
-        public async Task<string> AddToServiceBus(CancellationToken cancellationToken)
-        {
-            await _bus.Publish<IPubSub>(new PubSub { Message = "send message" });
-            var endpoint = await _bus.GetSendEndpoint(new Uri($"rabbitmq://{_rabbitmqOptions.Value.host}/data-added"));
-            await endpoint.Send<IPubSub>(new PubSub { Message = "data passed" });
-
-            OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
-            return result.OrderId;
-        }
+        
 
         [HttpGet]
         [Route(nameof(Error))]
@@ -71,10 +56,9 @@ namespace FirstService.Controllers
 
         [HttpGet]
         [Route(nameof(GetToken))]
-        [HttpGet]
         public async Task<string> GetToken()
         {
-            DiscoveryClient disClient = new DiscoveryClient("http://oauthserver/");
+            DiscoveryClient disClient = new DiscoveryClient($"http://{_oauthOptions.host}/");
             disClient.Policy.RequireHttps = false;
 
             DiscoveryResponse disco = await disClient.GetAsync();
@@ -92,7 +76,7 @@ namespace FirstService.Controllers
 
             HttpClient client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
-            HttpResponseMessage response = await client.GetAsync("http://firstservice/home/valid");
+            HttpResponseMessage response = await client.GetAsync($"http://{_firstOptions.host}/api/home/valid");
             string result = await response.Content.ReadAsStringAsync();
 
             return result + " & token: " + tokenResponse.AccessToken;

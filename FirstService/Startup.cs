@@ -17,18 +17,28 @@ namespace FirstService
         public IContainer ApplicationContainer { get; private set; }
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var builder = new ContainerBuilder(); //Autofac
 
+            services.AddMvc();
+
             services.Configure<RedisOptions>(Configuration.GetSection("redis"));
-            services.Configure<RedisOptions>(Configuration.GetSection("rabbitmq"));
+            services.Configure<RabbitmqOptions>(Configuration.GetSection("rabbitmq"));
             services.Configure<MongoOptions>(Configuration.GetSection("mongo"));
+            services.Configure<OAuthOptions>(Configuration.GetSection("oauth"));
+            services.Configure<FirstServiceOptions>(Configuration.GetSection("firstService"));
 
             ConfigureRedis(services);
             ConfigureDistributedCache(services);
@@ -36,7 +46,6 @@ namespace FirstService
             services.GeneralServices(Configuration);
             builder.AutofacServices();
 
-            services.AddMvc();
             services.AddSwaggerDocumentation();
 
             var bus = ConfigureRabbitmqHost(services);

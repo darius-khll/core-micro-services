@@ -40,36 +40,28 @@ namespace FirstService.Test
         }
 
         [Fact]
-        public async Task UserController_GetUser_ShouldReturnSomething()
+        public async Task UserController_SetGetInRedis_ShouldReturnSomething()
         {
-            var response = await _client.GetAsync($"{FirstService}/user/getuser");
+            var response = await _client.GetAsync($"{FirstService}/user/SetGetInRedis");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("bbb", responseString);
         }
+        
 
         [Fact]
-        public async Task UserController_Index_ShouldReturnSomething()
+        public async Task CacheController_RemoveCache_ShouldReturnDone()
         {
-            var response = await _client.GetAsync($"{FirstService}/user/index");
-
-            var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Contains("First Service requested: bbb", responseString);
-        }
-
-        [Fact]
-        public async Task CacheController_Remove_ShouldReturnDone()
-        {
-            var response = await _client.GetAsync($"{FirstService}/cache/del");
+            var response = await _client.GetAsync($"{FirstService}/cache/RemoveCache");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("done", responseString);
         }
 
         [Fact]
-        public async Task AddToServiceBusInHomeControllerShouldReturnCorrectValue()
+        public async Task AddToServiceBusController_AddToServiceBus_ShouldReturnCorrectValue()
         {
-            var response = await _client.GetAsync($"{FirstService}/home/AddToServiceBus");
+            var response = await _client.GetAsync($"{FirstService}/servicebus/AddToServiceBus");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("123", responseString);

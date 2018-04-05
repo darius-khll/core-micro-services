@@ -9,6 +9,9 @@ namespace FirstService.Repository
         Task SetUser(string user, string name);
     }
 
+    /*
+     *  redis repository for it's database
+     */
     public class RedisRepository : IRedisRepository
     {
         private readonly IDatabase  _client;

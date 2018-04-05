@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System;
@@ -11,7 +11,7 @@ namespace FirstService.Test
         public const string RediHost = "localhost:8184";
         public const string RabbitmqHost = "localhost:5672";
 
-        public TestStartup(IConfiguration configuration) : base(configuration)
+        public TestStartup(IHostingEnvironment env) : base(env)
         {
         }
 

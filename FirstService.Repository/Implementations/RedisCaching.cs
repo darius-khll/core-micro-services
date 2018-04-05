@@ -9,6 +9,10 @@ namespace FirstService.Repository.Implementations
         Task<T> GetCachedData(string key);
         Task SetCachedData(string key, T value);
     }
+
+    /*
+     *  distributed cache service
+     */
     public class RedisCaching<T> : IRedisCaching<T>
     {
         public IDistributedCache _distributedCache { get; }

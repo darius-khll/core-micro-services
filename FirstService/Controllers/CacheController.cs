@@ -15,17 +15,24 @@ namespace FirstService.Controllers
             _cacheBusiness = cacheBusiness;
         }
 
+        /*
+         *  get something from redis distributed cache &
+         *  cache it
+         */
         [HttpGet]
-        [Route(nameof(Index))]
-        public async Task<string> Index()
+        [Route(nameof(CacheIfNotExist))]
+        public async Task<string> CacheIfNotExist()
         {
             string result = await _cacheBusiness.CacheIfNotExist();
             return result;
         }
 
+        /*
+         *  remove from distributed cache
+         */
         [HttpGet]
-        [Route(nameof(Del))]
-        public async Task<string> Del()
+        [Route(nameof(RemoveCache))]
+        public async Task<string> RemoveCache()
         {
             string result = await _cacheBusiness.RemoveCache();
             return result;

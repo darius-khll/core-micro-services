@@ -38,18 +38,18 @@ namespace FirstService.Test
         }
         
         [Fact]
-        public async Task CacheController_Remove_ShouldReturnDone()
+        public async Task CacheController_RemoveCache_ShouldReturnDone()
         {
-            var response = await _client.GetAsync($"/api/cache/del");
+            var response = await _client.GetAsync($"/api/cache/RemoveCache");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("done", responseString);
         }
 
         [Fact]
-        public async Task UserController_GetUser_ShouldReturnSomething()
+        public async Task UserController_SetGetInRedis_ShouldReturnSomething()
         {
-            var response = await _client.GetAsync($"/api/user/getuser");
+            var response = await _client.GetAsync($"/api/user/SetGetInRedis");
 
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("bbb", responseString);

@@ -15,20 +15,16 @@ namespace FirstService.Controllers
             _firstBusiness = firstBusiness;
         }
 
+        /*
+         *  set user in redis
+         *  get user in redis
+         */
         [HttpGet]
-        [Route(nameof(Index))]
-        public async Task<string> Index()
+        [Route(nameof(SetGetInRedis))]
+        public async Task<string> SetGetInRedis()
         {
             string name = await _firstBusiness.UserHandlerAsync("aaa", "bbb");
             return name;
-        }
-
-        [HttpGet]
-        [Route(nameof(GetUser))]
-        public async Task<string> GetUser()
-        {
-            string user = await _firstBusiness.UserTest("aaa", "bbb");
-            return user;
         }
 
     }

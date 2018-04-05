@@ -20,7 +20,7 @@ namespace FirstService.Test
         [InlineData(-5, -2, -7)]
         public void SumMethodInFirstBusinessShouldWorks(int a, int b, int r)
         {
-            IFirstBusiness firstBusiness = new FirstBusiness(null, null);
+            IFirstBusiness firstBusiness = new FirstBusiness(null);
             int result = firstBusiness.Sum(a, b);
             Assert.Equal(r, result);
         }
@@ -28,7 +28,7 @@ namespace FirstService.Test
         [Fact]
         public void ShuMethodShouldWorks()
         {
-            IFirstBusiness firstBusiness = new FirstBusiness(null, null);
+            IFirstBusiness firstBusiness = new FirstBusiness(null);
             int result = firstBusiness.Sum(1, 2);
             Assert.Equal(3, result);
         }
@@ -41,9 +41,9 @@ namespace FirstService.Test
             var mockDependency1 = new Mock<IRedisRepository>();
             mockDependency1.Setup(d => d.GetUser(user)).Returns(async () => await Task.Run(() => name));
 
-            IFirstBusiness firstBusiness = new FirstBusiness(null, mockDependency1.Object);
+            IFirstBusiness firstBusiness = new FirstBusiness(mockDependency1.Object);
 
-            string result = await firstBusiness.UserTest(user, name);
+            string result = await firstBusiness.UserHandlerAsync(user, name);
 
             Assert.Equal(res, result);
         }
@@ -57,7 +57,7 @@ namespace FirstService.Test
 
             var c = new CacheController(mockDependency1.Object);
 
-            string result = await c.Del();
+            string result = await c.RemoveCache();
 
             Assert.Equal("done", result);
         }

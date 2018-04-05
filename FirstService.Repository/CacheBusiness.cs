@@ -22,6 +22,9 @@ namespace FirstService.Repository
             _redisCaching = distributedCache;
         }
 
+        /*
+         *  caching using distributed cache
+         */
         public async Task<string> CacheIfNotExist()
         {
             var existingTime = await _redisCaching.GetCachedData(_key);
@@ -37,6 +40,9 @@ namespace FirstService.Repository
             }
         }
 
+        /*
+         *  remove from distributed cache
+         */
         public async Task<string> RemoveCache()
         {
             await _redisCaching.SetCachedData(_key, "");
