@@ -19,6 +19,7 @@ namespace FirstService
 
         public Startup(IHostingEnvironment env)
         {
+            //it can removes
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -34,17 +35,17 @@ namespace FirstService
 
             services.AddMvc();
 
-            services.Configure<RedisOptions>(Configuration.GetSection("redis"));
-            services.Configure<RabbitmqOptions>(Configuration.GetSection("rabbitmq"));
-            services.Configure<MongoOptions>(Configuration.GetSection("mongo"));
-            services.Configure<OAuthOptions>(Configuration.GetSection("oauth"));
-            services.Configure<FirstServiceOptions>(Configuration.GetSection("firstService"));
+            services.Configure<RedisOptions>(Configuration.GetSection(RedisOptions.GetConfigName));
+            services.Configure<RabbitmqOptions>(Configuration.GetSection(RabbitmqOptions.GetConfigName));
+            services.Configure<MongoOptions>(Configuration.GetSection(MongoOptions.GetConfigName));
+            services.Configure<OAuthOptions>(Configuration.GetSection(OAuthOptions.GetConfigName));
+            services.Configure<FirstServiceOptions>(Configuration.GetSection(FirstServiceOptions.GetConfigName));
 
             ConfigureRedis(services);
             ConfigureDistributedCache(services);
 
             services.GeneralServices(Configuration);
-            builder.AutofacServices();
+            builder.AutofacServices(); // autofac sample DI
 
             services.AddSwaggerDocumentation();
 
@@ -56,17 +57,9 @@ namespace FirstService
             return new AutofacServiceProvider(ApplicationContainer);
 
         }
-
-        public virtual IBusControl ConfigureRabbitmqHost(IServiceCollection services)
-        {
-            var bus = services.ServiceBus(Configuration);
-            return bus;
-        }
-
         public virtual void ConfigureRedis(IServiceCollection services)
         {
             string redisHost = Configuration[$"{RedisOptions.GetConfigName}:{nameof(RedisOptions.host)}"];
-
             services.AddScoped(provider => ConnectionMultiplexer.Connect(redisHost).GetDatabase());
         }
 
@@ -80,6 +73,12 @@ namespace FirstService
                 options.Configuration = redisHost;
                 options.InstanceName = redisName;
             });
+        }
+
+        public virtual IBusControl ConfigureRabbitmqHost(IServiceCollection services)
+        {
+            var bus = services.ServiceBusRabbitmqConfiguration(Configuration);
+            return bus;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)

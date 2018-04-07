@@ -1,6 +1,6 @@
 version: '3'
 
-#run with docker-compose.override to handle Production environment
+#run with docker-compose.override to handle Production environment and tests will run
 #docker-compose -f docker-compose.yml -f .\docker-compose.override.yml up --build
 
 networks:
