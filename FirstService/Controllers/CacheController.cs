@@ -1,7 +1,7 @@
-﻿using FirstService.Repository;
+﻿using Common.Filters;
+using ConsumerService.Business;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Common.Filters;
 
 namespace FirstService.Controllers
 {

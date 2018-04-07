@@ -1,5 +1,6 @@
-﻿using FirstService.Controllers;
-using FirstService.Repository;
+﻿using Common.Repositories;
+using ConsumerService.Business;
+using FirstService.Controllers;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;

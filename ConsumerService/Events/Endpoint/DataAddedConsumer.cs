@@ -1,5 +1,5 @@
 ﻿using Common.Implementations;
-using FirstService.Repository.Implementations;
+using ConsumerService.Business.Implementations;
 using MassTransit;
 using System;
 using System.Threading.Tasks;

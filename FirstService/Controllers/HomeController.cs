@@ -1,18 +1,13 @@
-﻿using Common.Options;
-using Common.Implementations;
+﻿using Common.Filters;
+using Common.Options;
 using FirstService.Implementations;
-using FirstService.Repository.Implementations;
 using IdentityModel.Client;
-using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
-using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Common.Filters;
 
 namespace FirstService.Controllers
 {

@@ -1,8 +1,9 @@
 ﻿using Autofac;
-using Common.Options;
 using Common.Implementations;
-using FirstService.Repository;
-using FirstService.Repository.Implementations;
+using Common.Options;
+using Common.Repositories;
+using ConsumerService.Business;
+using ConsumerService.Business.Implementations;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -65,7 +66,7 @@ namespace FirstService.Implementations
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
 
-            services.AddScoped(typeof(IRedisCaching<>), typeof(RedisCaching<>)); //generic DI
+            services.AddScoped(typeof(IRedisCachingRepository<>), typeof(IRedisCachingRepository<>)); //generic DI
             services.AddScoped<IRedisRepository, RedisRepository>();
             services.AddScoped<IFirstBusiness, FirstBusiness>();
 

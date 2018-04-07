@@ -28,7 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FirstService.Repository\FirstService.Repository.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\ConsumerService.Business\ConsumerService.Business.csproj" />
   </ItemGroup>
 
 </Project>

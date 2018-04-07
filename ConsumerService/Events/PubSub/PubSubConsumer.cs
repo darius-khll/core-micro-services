@@ -1,4 +1,4 @@
-﻿using FirstService.Repository.Implementations;
+﻿using ConsumerService.Business.Implementations;
 using MassTransit;
 using MongoDB.Driver;
 using System.Collections.Generic;
