@@ -21,7 +21,7 @@ namespace FirstService.Implementations
             builder.RegisterType<CacheBusiness>().As<ICacheBusiness>().InstancePerLifetimeScope();
         }
 
-        public static IBusControl ServiceBus(this IServiceCollection services, IConfiguration Configuration)
+        public static IBusControl ServiceBusRabbitmqConfiguration(this IServiceCollection services, IConfiguration Configuration)
         {
             string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
             string user = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.user)}"];
