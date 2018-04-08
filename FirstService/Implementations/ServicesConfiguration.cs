@@ -66,7 +66,7 @@ namespace FirstService.Implementations
             services.AddSingleton<HttpClient>();
             services.AddSingleton<IHttpService, HttpService>();
 
-            services.AddScoped(typeof(IRedisCachingRepository<>), typeof(IRedisCachingRepository<>)); //generic DI
+            services.AddScoped(typeof(IRedisCachingRepository<>), typeof(RedisCachingRepository<>)); //generic DI
             services.AddScoped<IRedisRepository, RedisRepository>();
             services.AddScoped<IFirstBusiness, FirstBusiness>();
 
