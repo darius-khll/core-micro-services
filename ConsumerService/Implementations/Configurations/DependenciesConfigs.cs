@@ -17,7 +17,7 @@ namespace ConsumerService.Implementations.Configurations
         public ContainerBuilder InitializedDependencies(IConfigurationRoot configuration, ConsumerOptions consumerOptions)
         {
             ContainerBuilder builder = new ContainerBuilder();
-            
+
             //"mongodb://user:password@localhost"
             builder.Register(ctx =>
             {
@@ -27,9 +27,12 @@ namespace ConsumerService.Implementations.Configurations
             builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
             builder.RegisterType<HttpService>().As<IHttpService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<DataAddedConsumer>();
-            builder.RegisterType<PubSubConsumer>();
-            builder.RegisterType<SubmitOrderConsumer>();
+
+            /* register all Consumers instead of
+            builder.RegisterType<DataAddedConsumer>(); and etc ... */
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => t.Name.EndsWith("Consumer"))
+                .AsImplementedInterfaces().InstancePerLifetimeScope();
 
 
             builder.RegisterConsumers(Assembly.GetExecutingAssembly()); //register consumers
