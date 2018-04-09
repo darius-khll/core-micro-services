@@ -3,7 +3,7 @@ using Common.Implementations;
 using Common.Options;
 using Common.Repositories;
 using ConsumerService.Business;
-using ConsumerService.Business.Implementations;
+using ConsumerService.Business.Models;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;

@@ -1,6 +1,6 @@
 ﻿using Common.Filters;
 using Common.Options;
-using ConsumerService.Business.Implementations;
+using ConsumerService.Business.Models;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

@@ -1,4 +1,4 @@
-﻿namespace ConsumerService.Business.Implementations
+﻿namespace ConsumerService.Business.Models
 {
     public interface SubmitOrder
     {
