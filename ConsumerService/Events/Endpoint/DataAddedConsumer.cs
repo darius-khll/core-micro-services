@@ -1,5 +1,5 @@
 ﻿using Common.Implementations;
-using ConsumerService.Business.Implementations;
+using ConsumerService.Business.Models;
 using MassTransit;
 using System;
 using System.Threading.Tasks;

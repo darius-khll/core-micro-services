@@ -1,6 +1,6 @@
-﻿using ConsumerService.Business.Implementations;
+﻿using Common.Repositories.Mongo;
+using ConsumerService.Business.Models;
 using MassTransit;
-using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,18 +8,22 @@ namespace ConsumerService.Consumers
 {
     public class PubSubConsumer : IConsumer<IPubSub>
     {
-        public IMongoDatabase _mongoDb { get; }
+        public IMongoRepository<User> _mongoRepository { get; set; }
 
-        public PubSubConsumer(IMongoDatabase mongoDb)
+        public PubSubConsumer(IMongoRepository<User> mongoRepository)
         {
-            _mongoDb = mongoDb;
+            _mongoRepository = mongoRepository;
         }
 
         public async Task Consume(ConsumeContext<IPubSub> context)
         {
-            await _mongoDb.GetCollection<User>("Users").InsertOneAsync(new User { Name = "abc1", Age = 10 });
+            User savedUser = await _mongoRepository.SaveAsync(new User { Name = "ali", Age = 20, Addresses = new List<string> { "Tehran", "Shiraz" } });
 
-            List<User> users = (await _mongoDb.GetCollection<User>("Users").FindAsync(c => c.Name == "abc1")).ToList();
+            User takenUser = await _mongoRepository.GetByIdAsync(savedUser.Id);
+
+            ICollection<User> users = await _mongoRepository.FindAllAsync(u => u.Name == "ali");
+
+            await _mongoRepository.DeleteAsync(takenUser.Id);
         }
     }
 }

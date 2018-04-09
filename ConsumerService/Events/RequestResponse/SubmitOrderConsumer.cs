@@ -1,4 +1,4 @@
-﻿using ConsumerService.Business.Implementations;
+﻿using ConsumerService.Business.Models;
 using MassTransit;
 using System.Threading.Tasks;
 
