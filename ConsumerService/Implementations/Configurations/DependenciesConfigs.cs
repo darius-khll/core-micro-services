@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using Common.Implementations;
+using Common.Repositories.Mongo;
 using ConsumerService.Consumers;
 using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
 using System;
 using System.Net.Http;
 using System.Reflection;
@@ -19,20 +19,16 @@ namespace ConsumerService.Implementations.Configurations
             ContainerBuilder builder = new ContainerBuilder();
 
             //"mongodb://user:password@localhost"
-            builder.Register(ctx =>
-            {
-                return new MongoClient($"mongodb://{consumerOptions.MongoHost}").GetDatabase("secondDb");
-            }).As<IMongoDatabase>();
+            builder.Register(ctx => new MongoDataContext("mongoDatabase", $"mongodb://{consumerOptions.MongoHost}")).As<IMongoDataContext>().InstancePerLifetimeScope();
+            
+            builder.RegisterGeneric(typeof(MongoRepository<>)).As(typeof(IMongoRepository<>)).InstancePerLifetimeScope();
 
-            builder.RegisterType<HttpClient>().InstancePerLifetimeScope();
-            builder.RegisterType<HttpService>().As<IHttpService>().InstancePerLifetimeScope();
-
+            builder.RegisterType<HttpClient>().SingleInstance();
+            builder.RegisterType<HttpService>().As<IHttpService>().SingleInstance();
 
             /* register all Consumers instead of
             builder.RegisterType<DataAddedConsumer>(); and etc ... */
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Consumer"))
-                .AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Consumer")).AsImplementedInterfaces().InstancePerLifetimeScope();
 
 
             builder.RegisterConsumers(Assembly.GetExecutingAssembly()); //register consumers
