@@ -2,6 +2,7 @@
 using Common.Implementations;
 using Common.Options;
 using Common.Repositories;
+using Common.Repositories.ServiceBus;
 using ConsumerService.Business;
 using ConsumerService.Business.Models;
 using IdentityServer4.AccessTokenValidation;
@@ -46,11 +47,11 @@ namespace FirstService.Implementations
             services.AddSingleton<ISendEndpointProvider>(bus);
             services.AddSingleton<IBus>(bus);
 
-            string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
+            services.AddScoped<IServiceBusRepository, ServiceBusRepository>();
 
+            string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
             var timeout = TimeSpan.FromSeconds(10);
             var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/order-service");
-
             services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x =>
                 new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
 
