@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Common.Implementations;
 using Common.Repositories.Mongo;
+using ConsumerService.Business;
 using ConsumerService.Consumers;
 using GreenPipes;
 using MassTransit;
@@ -20,7 +21,6 @@ namespace ConsumerService.Implementations.Configurations
 
             //"mongodb://user:password@localhost"
             builder.Register(ctx => new MongoDataContext("mongoDatabase", $"mongodb://{consumerOptions.MongoHost}")).As<IMongoDataContext>().InstancePerLifetimeScope();
-            
             builder.RegisterGeneric(typeof(MongoRepository<>)).As(typeof(IMongoRepository<>)).InstancePerLifetimeScope();
 
             builder.RegisterType<HttpClient>().SingleInstance();
@@ -29,7 +29,7 @@ namespace ConsumerService.Implementations.Configurations
             /* register all Consumers instead of
             builder.RegisterType<DataAddedConsumer>(); and etc ... */
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Consumer")).AsImplementedInterfaces().InstancePerLifetimeScope();
-
+            builder.RegisterAssemblyTypes(typeof(MongoBusiness).Assembly).Where(t => t.Name.EndsWith("Business")).AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.RegisterConsumers(Assembly.GetExecutingAssembly()); //register consumers
 
