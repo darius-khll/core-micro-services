@@ -8,9 +8,11 @@ namespace ConsumerService
     {
         static void Main(string[] args)
         {
-            IConfigurationRoot configuration = new EnvironmentConfigs().InitializedEnvironmentConfigs();
+            var env = new EnvironmentConfigs();
 
-            ConsumerOptions consumerOptions = new GetConsumerOptions().GetOptions(configuration);
+            IConfigurationRoot configuration = env.InitializedEnvironmentConfigs();
+
+            ConsumerOptions consumerOptions = env.GetOptions(configuration);
 
             ContainerBuilder builder = new DependenciesConfigs().InitializedDependencies(configuration, consumerOptions);
 
