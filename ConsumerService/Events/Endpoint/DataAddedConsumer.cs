@@ -21,16 +21,16 @@ namespace ConsumerService.Consumers
 
             if (1 == 2) throw new Exception("Error1"); //goes to DataAddedFaultConsumer (if you have retry policy first restart happens!)
 
-            await Task.Delay(5000);
+            await Task.Delay(1000);
         }
     }
 
     //when exeption raises
-    public class DataAddedFaultConsumer : IConsumer<Fault<IPubSub>>
+    public class DataAddedConsumerFault : IConsumer<Fault<IPubSub>>
     {
         public async Task Consume(ConsumeContext<Fault<IPubSub>> context)
         {
-            await Task.Delay(5000);
+            await Task.Delay(1000);
         }
     }
 }
