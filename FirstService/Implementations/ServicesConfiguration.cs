@@ -5,6 +5,7 @@ using Common.Repositories;
 using Common.Repositories.ServiceBus;
 using ConsumerService.Business;
 using ConsumerService.Business.Models;
+using ConsumerService.Consumers;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -51,7 +52,7 @@ namespace FirstService.Implementations
 
             string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
             var timeout = TimeSpan.FromSeconds(10);
-            var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/order-service");
+            var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/{nameof(SubmitOrderConsumer)}");
             services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x =>
                 new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
 

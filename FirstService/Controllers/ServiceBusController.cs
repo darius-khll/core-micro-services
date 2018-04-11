@@ -1,6 +1,7 @@
 ﻿using Common.Filters;
 using Common.Repositories.ServiceBus;
 using ConsumerService.Business.Models;
+using ConsumerService.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,7 +38,7 @@ namespace FirstService.Controllers
             await _busRepository.Publish<IPubSub>(new PubSub { Message = "send message" });
 
             //2
-            await _busRepository.SendToEndpoint<IPubSub>("data-added", new PubSub { Message = "data passed" });
+            await _busRepository.SendToEndpoint<IPubSub>(nameof(DataAddedConsumer), new PubSub { Message = "data passed" });
 
             //3
             OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);
