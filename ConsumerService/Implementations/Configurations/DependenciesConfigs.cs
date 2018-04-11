@@ -48,7 +48,18 @@ namespace ConsumerService.Implementations.Configurations
                         h.Password(consumerOptions.RabbitPassword);
                     });
 
-                    cfg.ReceiveEndpoint(host, "order-service", e => e.Consumer<SubmitOrderConsumer>(context));
+
+                    //cfg.ReceiveEndpoint(host, nameof(DataAddedConsumer), e =>
+                    //{
+                    //    e.UseRetry(r => r.Immediate(3));
+                    //    e.Consumer<DataAddedConsumer>(context);
+                    //    e.Consumer<DataAddedConsumerFault>(context);
+                    //});
+
+
+                    cfg.AddConsumersEndpoint(host, context, new string[] { "ConsumerService.Consumers" });
+
+                    /*
                     cfg.ReceiveEndpoint(host, "pub-sub", e => e.Consumer<PubSubConsumer>(context));
                     cfg.ReceiveEndpoint(host, "data-added", e =>
                     {
@@ -56,6 +67,7 @@ namespace ConsumerService.Implementations.Configurations
                         e.Consumer<DataAddedConsumer>(context);
                         e.Consumer<DataAddedFaultConsumer>(context); //when something bad happens
                     });
+                    */
                 });
 
                 return bus;
