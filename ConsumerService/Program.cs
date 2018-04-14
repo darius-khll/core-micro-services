@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using ConsumerService.Implementations.Configurations;
+using ConsumerService.Configurations;
 using Microsoft.Extensions.Configuration;
 
 namespace ConsumerService

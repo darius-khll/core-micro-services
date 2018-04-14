@@ -32,4 +32,8 @@
     <ProjectReference Include="..\ConsumerService.Business\ConsumerService.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementations\" />
+  </ItemGroup>
+
 </Project>
