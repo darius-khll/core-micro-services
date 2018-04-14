@@ -1,4 +1,4 @@
-﻿namespace ConsumerService.Implementations.Configurations
+﻿namespace ConsumerService.Configurations
 {
     public class ConsumerOptions
     {

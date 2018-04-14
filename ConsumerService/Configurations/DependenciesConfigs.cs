@@ -11,7 +11,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ConsumerService.Implementations.Configurations
+namespace ConsumerService.Configurations
 {
     public class DependenciesConfigs
     {
