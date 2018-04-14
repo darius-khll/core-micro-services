@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsumerService.Consumers
 {
-    public class DataAddedConsumer : IConsumer<IPubSub>
+    public class DataAddedConsumer : IConsumer<IDataAdded>
     {
         public readonly IHttpService _httpService;
 
@@ -15,7 +15,7 @@ namespace ConsumerService.Consumers
             _httpService = httpService;
         }
 
-        public async Task Consume(ConsumeContext<IPubSub> context)
+        public async Task Consume(ConsumeContext<IDataAdded> context)
         {
             var user = _httpService.ToString();
 
@@ -26,9 +26,9 @@ namespace ConsumerService.Consumers
     }
 
     //when exeption raises
-    public class DataAddedConsumerFault : IConsumer<Fault<IPubSub>>
+    public class DataAddedConsumerFault : IConsumer<Fault<IDataAdded>>
     {
-        public async Task Consume(ConsumeContext<Fault<IPubSub>> context)
+        public async Task Consume(ConsumeContext<Fault<IDataAdded>> context)
         {
             await Task.Delay(1000);
         }

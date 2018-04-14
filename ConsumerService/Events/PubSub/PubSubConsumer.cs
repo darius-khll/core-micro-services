@@ -19,4 +19,12 @@ namespace ConsumerService.Consumers
             await _mongoBusiness.HandleLogic();
         }
     }
+
+    public class PubSubConsumerFault : IConsumer<Fault<IPubSub>>
+    {
+        public async Task Consume(ConsumeContext<Fault<IPubSub>> context)
+        {
+            await Task.Delay(1000);
+        }
+    }
 }

@@ -38,7 +38,7 @@ namespace FirstService.Controllers
             await _busRepository.Publish<IPubSub>(new PubSub { Message = "send message" });
 
             //2
-            await _busRepository.SendToEndpoint<IPubSub>(nameof(DataAddedConsumer), new PubSub { Message = "data passed" });
+            await _busRepository.SendToEndpoint<IDataAdded>(nameof(DataAddedConsumer), new DataAdded { Message = "data passed" });
 
             //3
             OrderAccepted result = await _requestClient.Request(new { OrderId = 123 }, cancellationToken);

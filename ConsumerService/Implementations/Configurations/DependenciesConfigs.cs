@@ -49,25 +49,33 @@ namespace ConsumerService.Implementations.Configurations
                     });
 
 
+                    cfg.AddConsumersEndpoint(host, context, new string[] { "ConsumerService.Consumers" }, (t, e) =>
+                    {
+                        //if (t == typeof(PubSubConsumer))
+                        //{
+                        //    return false;
+                        //}
+
+                        e.UseRetry(r => r.Immediate(5));
+
+                        if (t == typeof(DataAddedConsumer))
+                        {
+                            e.UseRetry(r => r.Immediate(1));
+                        }
+
+                        return true;
+                    });
+
+
+                    //cfg.ReceiveEndpoint(host, nameof(PubSubConsumer), e => e.Consumer<PubSubConsumer>(context));
+                    //cfg.ReceiveEndpoint(host, nameof(SubmitOrderConsumer), e => e.Consumer<SubmitOrderConsumer>(context));
                     //cfg.ReceiveEndpoint(host, nameof(DataAddedConsumer), e =>
                     //{
-                    //    e.UseRetry(r => r.Immediate(3));
+                    //    e.UseRetry(r => r.Immediate(1));
                     //    e.Consumer<DataAddedConsumer>(context);
                     //    e.Consumer<DataAddedConsumerFault>(context);
                     //});
 
-
-                    cfg.AddConsumersEndpoint(host, context, new string[] { "ConsumerService.Consumers" });
-
-                    /*
-                    cfg.ReceiveEndpoint(host, "pub-sub", e => e.Consumer<PubSubConsumer>(context));
-                    cfg.ReceiveEndpoint(host, "data-added", e =>
-                    {
-                        e.UseRetry(r => r.Immediate(5)); //retry 5times if exception happens
-                        e.Consumer<DataAddedConsumer>(context);
-                        e.Consumer<DataAddedFaultConsumer>(context); //when something bad happens
-                    });
-                    */
                 });
 
                 return bus;
