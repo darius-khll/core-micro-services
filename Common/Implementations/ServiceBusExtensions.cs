@@ -10,10 +10,13 @@ namespace Common.Implementations
 {
     public static class ServiceBusExtensions
     {
-        /*
-         *  string[] namespaces => find consumer in specefic namespaces 
-         *  endpoint should be name of Consumer
-         */
+        /// <summary>
+        ///     endpoint should be name of Consumer
+        /// </summary>
+        /// <param name="host">host</param>
+        /// <param name="context">context</param>
+        /// <param name="namespaces">find consumer in specefic namespaces </param>
+        /// <param name="onConfigure">overrided configs</param>
         public static void AddConsumersEndpoint(this IRabbitMqBusFactoryConfigurator cfg, IRabbitMqHost host, IComponentContext context, string[] namespaces, Func<TypeInfo, IRabbitMqReceiveEndpointConfigurator, bool> onConfigure = null)
         {
             MethodInfo autofacConsumerMethod = typeof(AutofacExtensions).GetTypeInfo().GetMethod(nameof(AutofacExtensions.Consumer), new[] { typeof(IReceiveEndpointConfigurator).GetTypeInfo(), typeof(IComponentContext).GetTypeInfo(), typeof(string).GetTypeInfo() });
