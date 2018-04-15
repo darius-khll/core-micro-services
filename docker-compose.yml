@@ -77,3 +77,11 @@ services:
     networks:
      - backend
 
+  postgres:
+    image: postgres
+    ports:
+      - "8189:5432"
+    networks:
+     - backend
+
+
