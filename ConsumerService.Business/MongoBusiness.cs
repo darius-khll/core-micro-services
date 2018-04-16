@@ -12,7 +12,7 @@ namespace ConsumerService.Business
 
     public class MongoBusiness : IMongoBusiness
     {
-        public IMongoRepository<User> _mongoRepository { get; set; }
+        public readonly IMongoRepository<User> _mongoRepository;
 
         public MongoBusiness(IMongoRepository<User> mongoRepository)
         {
