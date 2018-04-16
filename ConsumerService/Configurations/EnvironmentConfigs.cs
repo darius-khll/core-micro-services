@@ -31,13 +31,17 @@ namespace ConsumerService.Configurations
             string rabbitHost = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
             string rabbitUser = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.user)}"];
             string rabbitPassword = configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.password)}"];
+            string postgressHost = configuration[$"{PostgresOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
+            string postgresDbName = configuration[$"{PostgresOptions.GetConfigName}:{nameof(RabbitmqOptions.name)}"];
 
             return new ConsumerOptions
             {
                 MongoHost = mongoHost,
                 RabbitHost = rabbitHost,
                 RabbitUser = rabbitUser,
-                RabbitPassword = rabbitPassword
+                RabbitPassword = rabbitPassword,
+                PostgressHost = postgressHost,
+                PostgresDbName = postgresDbName
             };
         }
     }
