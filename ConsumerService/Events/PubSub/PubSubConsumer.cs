@@ -19,7 +19,7 @@ namespace ConsumerService.Consumers
         public async Task Consume(ConsumeContext<IPubSub> context)
         {
             await _mongoBusiness.HandleLogic();
-            await _dapperBusiness.HandleLogic();
+            //await _dapperBusiness.HandleLogic();
         }
     }
 
