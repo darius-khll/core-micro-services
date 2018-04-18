@@ -19,19 +19,13 @@ namespace Common.Implementations
         /// <param name="context">context</param>
         /// <param name="namespaces">find consumer in specefic namespaces </param>
         /// <param name="onConfigure">overrided configs</param>
-        public static void AddConsumersEndpoint(this IRabbitMqBusFactoryConfigurator cfg, IRabbitMqHost host, IComponentContext context, string[] namespaces, Func<TypeInfo, IRabbitMqReceiveEndpointConfigurator, bool> onConfigure = null)
+        public static void RegisterAllConsumer(this IRabbitMqBusFactoryConfigurator cfg, IRabbitMqHost host, IComponentContext context, string[] namespaces, Func<TypeInfo, IRabbitMqReceiveEndpointConfigurator, bool> onConfigure = null)
         {
             MethodInfo autofacConsumerMethod = typeof(AutofacExtensions).GetTypeInfo()
-                .GetMethod(nameof(AutofacExtensions.Consumer), new[] { typeof(IReceiveEndpointConfigurator).GetTypeInfo(), typeof(IComponentContext).GetTypeInfo(), typeof(string).GetTypeInfo() });
+                .GetMethod(nameof(AutofacExtensions.Consumer),
+                new[] { typeof(IReceiveEndpointConfigurator).GetTypeInfo(), typeof(IComponentContext).GetTypeInfo(), typeof(string).GetTypeInfo() });
 
-            List<TypeInfo> consumersTypes = AppDomain.CurrentDomain.GetAssemblies()
-               .Where(asm => asm.IsDynamic == false)
-               .Where(asm => asm.GetReferencedAssemblies().Any(refAsm => refAsm.Name == "MassTransit"))
-               .SelectMany(x => x.GetExportedTypes())
-               .Where(x => typeof(IConsumer).IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
-               .Where(x => namespaces.Contains(x.Namespace))
-               .Select(x => x.GetTypeInfo())
-               .ToList();
+            List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IConsumer), namespaces);
 
             foreach (TypeInfo consumerType in consumersTypes)
             {
@@ -51,15 +45,7 @@ namespace Common.Implementations
 
         public static void f1(IServiceCollection services, string rabbitmqHost, TimeSpan timeout, string[] namespaces)
         {
-
-            List<TypeInfo> consumersTypes = AppDomain.CurrentDomain.GetAssemblies()
-               .Where(asm => asm.IsDynamic == false)
-               .Where(asm => asm.GetReferencedAssemblies().Any(refAsm => refAsm.Name == "MassTransit"))
-               .SelectMany(x => x.GetExportedTypes())
-               .Where(x => typeof(IRequestResponse).IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
-               .Where(x => namespaces.Contains(x.Namespace))
-               .Select(x => x.GetTypeInfo())
-               .ToList();
+            List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IRequestResponse), namespaces);
 
             foreach (TypeInfo consType in consumersTypes)
             {
@@ -90,6 +76,20 @@ namespace Common.Implementations
                         });
                 }));
             }
+        }
+
+        private static List<TypeInfo> GetSpecificConsumers(Type consumerType, string[] namespaces)
+        {
+            List<TypeInfo> consumersTypes = AppDomain.CurrentDomain.GetAssemblies()
+               .Where(asm => asm.IsDynamic == false)
+               .Where(asm => asm.GetReferencedAssemblies().Any(refAsm => refAsm.Name == "MassTransit"))
+               .SelectMany(x => x.GetExportedTypes())
+               .Where(x => consumerType.IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
+               .Where(x => namespaces.Contains(x.Namespace))
+               .Select(x => x.GetTypeInfo())
+               .ToList();
+
+            return consumersTypes;
         }
     }
 }
