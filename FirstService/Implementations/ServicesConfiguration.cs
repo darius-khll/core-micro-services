@@ -53,10 +53,10 @@ namespace FirstService.Implementations
             string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
             TimeSpan timeout = TimeSpan.FromSeconds(10);
 
-            var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/{nameof(SubmitOrderConsumer)}");
-            services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x => new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
+            //var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/{nameof(SubmitOrderConsumer)}");
+            //services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x => new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
 
-            //ServiceBusExtensions.f1(services, rabbitmqHost, timeout, new string[] { "ConsumerService.Consumers" });
+            ServiceBusExtensions.RegisterAllRequestResponses(services, rabbitmqHost, timeout, new string[] { "ConsumerService.Consumers" });
 
 
             bus.Start();

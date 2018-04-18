@@ -43,7 +43,7 @@ namespace Common.Implementations
             }
         }
 
-        public static void f1(IServiceCollection services, string rabbitmqHost, TimeSpan timeout, string[] namespaces)
+        public static void RegisterAllRequestResponses(IServiceCollection services, string rabbitmqHost, TimeSpan timeout, string[] namespaces)
         {
             List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IRequestResponse), namespaces);
 
@@ -72,7 +72,7 @@ namespace Common.Implementations
                 {
                     return Activator.CreateInstance(typeof(MessageRequestClient<,>).MakeGenericType(requestType, responseType),
                         args: new object[] {
-                            sp.GetRequiredService<IBus>(), serviceAddress, timeout, timeout
+                            sp.GetRequiredService<IBus>(), serviceAddress, timeout, timeout, null
                         });
                 }));
             }
