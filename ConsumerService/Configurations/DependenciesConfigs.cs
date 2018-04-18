@@ -61,7 +61,7 @@ namespace ConsumerService.Configurations
                     });
 
 
-                    cfg.AddConsumersEndpoint(host, context, new string[] { "ConsumerService.Consumers" }, (t, e) =>
+                    cfg.RegisterAllConsumer(host, context, new string[] { "ConsumerService.Consumers" }, (t, e) =>
                     {
                         //if (t == typeof(PubSubConsumer))
                         //{
