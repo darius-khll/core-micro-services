@@ -43,9 +43,16 @@ namespace Common.Implementations
             }
         }
 
-        public static void RegisterAllRequestResponses(IServiceCollection services, string rabbitmqHost, TimeSpan timeout, string[] namespaces)
+        public static void RegisterAllRequestResponses(IServiceCollection services, Func<Type, RegisterAllRequestResponsesOptions> onConfigure = null)
         {
-            List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IRequestResponse), namespaces);
+            RegisterAllRequestResponsesOptions registerConfig = new RegisterAllRequestResponsesOptions
+            {
+                timeout = TimeSpan.FromSeconds(10),
+                rabbitmqHost = "localhost:5672",
+                namespaces = new string[] { "" }
+            };
+            
+            List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IRequestResponse), registerConfig.namespaces);
 
             foreach (TypeInfo consType in consumersTypes)
             {
@@ -64,15 +71,20 @@ namespace Common.Implementations
                     }
                 }
 
-                Uri serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/{consType.Name}");
+                Uri serviceAddress = new Uri($"rabbitmq://{registerConfig.rabbitmqHost}/{consType.Name}");
 
                 var requestClientGenericType = typeof(IRequestClient<,>).MakeGenericType(new Type[] { requestType, responseType });
 
                 ServiceCollectionServiceExtensions.AddScoped(services, requestClientGenericType, new Func<IServiceProvider, object>(sp =>
                 {
+                    if (onConfigure != null)
+                    {
+                        registerConfig = onConfigure(consType);
+                    }
+
                     return Activator.CreateInstance(typeof(MessageRequestClient<,>).MakeGenericType(requestType, responseType),
                         args: new object[] {
-                            sp.GetRequiredService<IBus>(), serviceAddress, timeout, timeout, null
+                            sp.GetRequiredService<IBus>(), serviceAddress, registerConfig.timeout, registerConfig.timeout, null
                         });
                 }));
             }
@@ -91,5 +103,12 @@ namespace Common.Implementations
 
             return consumersTypes;
         }
+    }
+
+    public class RegisterAllRequestResponsesOptions
+    {
+        public string rabbitmqHost { get; set; }
+        public TimeSpan timeout { get; set; }
+        public string[] namespaces { get; set; }
     }
 }
