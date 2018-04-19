@@ -51,13 +51,23 @@ namespace FirstService.Implementations
             services.AddScoped<IServiceBusRepository, ServiceBusRepository>();
 
             string rabbitmqHost = Configuration[$"{RabbitmqOptions.GetConfigName}:{nameof(RabbitmqOptions.host)}"];
-            TimeSpan timeout = TimeSpan.FromSeconds(10);
 
             //var serviceAddress = new Uri($"rabbitmq://{rabbitmqHost}/{nameof(SubmitOrderConsumer)}");
             //services.AddScoped<IRequestClient<SubmitOrder, OrderAccepted>>(x => new MessageRequestClient<SubmitOrder, OrderAccepted>(x.GetRequiredService<IBus>(), serviceAddress, timeout, timeout));
+            ServiceBusExtensions.RegisterAllRequestResponses(services, (consumerType) =>
+            {
+                if(consumerType == typeof(SubmitOrderConsumer))
+                {
+                    //do something special
+                }
 
-            ServiceBusExtensions.RegisterAllRequestResponses(services, rabbitmqHost, timeout, new string[] { "ConsumerService.Consumers" });
-
+                return new RegisterAllRequestResponsesOptions
+                {
+                    timeout = TimeSpan.FromSeconds(10),
+                    namespaces = new string[] { "ConsumerService.Consumers" },
+                    rabbitmqHost = rabbitmqHost
+                };
+            });
 
             bus.Start();
 
