@@ -45,12 +45,21 @@ namespace Common.Implementations
 
         public static void RegisterAllRequestResponses(IServiceCollection services, Func<Type, RegisterAllRequestResponsesOptions> onConfigure = null)
         {
-            RegisterAllRequestResponsesOptions registerConfig = new RegisterAllRequestResponsesOptions
+            RegisterAllRequestResponsesOptions registerConfig = null;
+            //we should change this part of configuration because multiple invoke of onConfigure
+            if (onConfigure != null)
             {
-                timeout = TimeSpan.FromSeconds(10),
-                rabbitmqHost = "localhost:5672",
-                namespaces = new string[] { "" }
-            };
+                registerConfig = onConfigure(null);
+            }
+            else
+            {
+                 registerConfig = new RegisterAllRequestResponsesOptions
+                {
+                    timeout = TimeSpan.FromSeconds(10),
+                    rabbitmqHost = "localhost:5672",
+                    namespaces = new string[] { "" }
+                };
+            }
             
             List<TypeInfo> consumersTypes = GetSpecificConsumers(typeof(IRequestResponse), registerConfig.namespaces);
 

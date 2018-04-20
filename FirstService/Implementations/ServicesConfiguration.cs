@@ -4,7 +4,7 @@ using Common.Options;
 using Common.Repositories;
 using Common.Repositories.ServiceBus;
 using ConsumerService.Business;
-using ConsumerService.Business.Models;
+using ConsumerService.Consumers;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Net.Http;
-using ConsumerService.Consumers;
 
 namespace FirstService.Implementations
 {
@@ -58,7 +57,7 @@ namespace FirstService.Implementations
             {
                 if(consumerType == typeof(SubmitOrderConsumer))
                 {
-                    //do something special
+                    //return something special
                 }
 
                 return new RegisterAllRequestResponsesOptions
