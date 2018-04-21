@@ -8,18 +8,19 @@ namespace ConsumerService.Consumers
     public class PubSubConsumer : IConsumer<IPubSub>
     {
         public readonly IMongoBusiness _mongoBusiness;
-        public readonly IDapperBusiness _dapperBusiness;
+        public readonly IPostgresBusiness _postgresBusiness;
 
-        public PubSubConsumer(IMongoBusiness mongoBusiness, IDapperBusiness dapperBusiness)
+        public PubSubConsumer(IMongoBusiness mongoBusiness, IPostgresBusiness postgresBusiness)
         {
             _mongoBusiness = mongoBusiness;
-            _dapperBusiness = dapperBusiness;
+            _postgresBusiness = postgresBusiness;
         }
 
         public async Task Consume(ConsumeContext<IPubSub> context)
         {
             await _mongoBusiness.HandleLogic();
-            //await _dapperBusiness.HandleLogic();
+            await _postgresBusiness.HandleEfCoreLogic();
+            //await _postgresBusiness.HandleDapperLogic();
         }
     }
 

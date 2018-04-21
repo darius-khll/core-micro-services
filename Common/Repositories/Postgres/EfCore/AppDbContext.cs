@@ -3,6 +3,7 @@ using System;
 
 namespace Common.Repositories.Postgres.EfCore
 {
+    //dotnet ef --startup-project ../MyProjectWithStartuo/ migrations add CreateDatabase
     //dotnet ef  migrations add CreateDatabase
     //dotnet ef database update
     public class AppDbContext : DbContext

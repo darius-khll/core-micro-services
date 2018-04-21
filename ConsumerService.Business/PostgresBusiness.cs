@@ -1,4 +1,5 @@
 ﻿using Common.Repositories.Postgres.Dapper;
+using Common.Repositories.Postgres.EfCore;
 using ConsumerService.Business.Models;
 using System;
 using System.Threading.Tasks;
@@ -6,21 +7,25 @@ using System.Threading.Tasks;
 namespace ConsumerService.Business
 {
 
-    public interface IDapperBusiness
+    public interface IPostgresBusiness
     {
-        Task HandleLogic();
+        Task HandleDapperLogic();
+        Task HandleEfCoreLogic();
     }
 
-    public class DapperBusiness : IDapperBusiness
+    public class PostgresBusiness : IPostgresBusiness
     {
         public readonly IDapperRepository<Employee> _dapperRepository;
+        public readonly AppDbContext _dbContext;
 
-        public DapperBusiness(IDapperRepository<Employee> dapperRepository)
+        public PostgresBusiness(IDapperRepository<Employee> dapperRepository, AppDbContext dbContext)
         {
             _dapperRepository = dapperRepository;
+            _dbContext = dbContext;
         }
 
-        public async Task HandleLogic()
+
+        public async Task HandleDapperLogic()
         {
             Guid id = Guid.NewGuid();
             var emp = new Employee { Id = id, first_name = "aaa11", last_name = "bbb11" };
@@ -36,6 +41,12 @@ namespace ConsumerService.Business
             await _dapperRepository.Remove(emp);
 
             await _dapperRepository.Commit();
+        }
+
+        public async Task HandleEfCoreLogic()
+        {
+            _dbContext.Users.Add(new Common.Repositories.Postgres.EfCore.User { Id = Guid.NewGuid(), Name = "aaa" });
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
