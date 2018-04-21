@@ -2,10 +2,12 @@
 using Common.Implementations;
 using Common.Repositories.Mongo;
 using Common.Repositories.Postgres.Dapper;
+using Common.Repositories.Postgres.EfCore;
 using ConsumerService.Business;
 using ConsumerService.Consumers;
 using GreenPipes;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
@@ -28,10 +30,11 @@ namespace ConsumerService.Configurations
 
             string[] postgres = consumerOptions.PostgressHost.Split(":"); //0: host, 1: port
             //Server=localhost; Port=8189; User Id=postgres; Password=; Database=mydb
-            string dapperConnetion = $"Server={postgres[0]}; Port={postgres[1]}; User Id=postgres; Password=; Database={consumerOptions.PostgresDbName}";
-            builder.Register(ctx => new NpgsqlConnection(dapperConnetion)).InstancePerLifetimeScope();
+            string postgresConnetion = $"Server={postgres[0]}; Port={postgres[1]}; User Id=postgres; Password=; Database={consumerOptions.PostgresDbName}";
+            builder.Register(ctx => new NpgsqlConnection(postgresConnetion)).InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(DapperRepository<>)).As(typeof(IDapperRepository<>)).InstancePerLifetimeScope();
 
+            builder.Register(ctx => new AppDbContext()).InstancePerLifetimeScope();
 
             builder.RegisterType<HttpClient>().SingleInstance();
             builder.RegisterType<HttpService>().As<IHttpService>().SingleInstance();
