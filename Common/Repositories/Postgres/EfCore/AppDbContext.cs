@@ -12,6 +12,8 @@ namespace Common.Repositories.Postgres.EfCore
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //we use this way overriding OnConfiguring when we wanna hard coded connection string
+            //could be UseSqlServer
             optionsBuilder.UseNpgsql(@"Server=localhost; Port=8189; User Id=postgres; Password=; database=AppDbCcontext");
         }
     }
