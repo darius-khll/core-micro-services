@@ -38,7 +38,7 @@ namespace ConsumerService.Configurations
 
             //register ef core
             DbContextOptionsBuilder<AppDbContext> dbContextoptionBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            dbContextoptionBuilder.UseNpgsql(@"Server=localhost; Port=8189; User Id=postgres; Password=; database=AppDbCcontext");
+            dbContextoptionBuilder.UseNpgsql(postgresConnetion);
             builder.Register(ctx => new AppDbContext(dbContextoptionBuilder.Options)).InstancePerLifetimeScope();
 
 
