@@ -11,6 +11,8 @@ namespace Common.Repositories.Postgres.EfCore
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        
+        //used for migrations enabled with overridnig OnConfiguring
         public AppDbContext() { }
 
         public DbSet<User> Users { get; set; }
