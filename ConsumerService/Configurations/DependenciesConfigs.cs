@@ -31,10 +31,16 @@ namespace ConsumerService.Configurations
             string[] postgres = consumerOptions.PostgressHost.Split(":"); //0: host, 1: port
             //Server=localhost; Port=8189; User Id=postgres; Password=; Database=mydb
             string postgresConnetion = $"Server={postgres[0]}; Port={postgres[1]}; User Id=postgres; Password=; Database={consumerOptions.PostgresDbName}";
+            //register dapper
             builder.Register(ctx => new NpgsqlConnection(postgresConnetion)).InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(DapperRepository<>)).As(typeof(IDapperRepository<>)).InstancePerLifetimeScope();
 
-            builder.Register(ctx => new AppDbContext()).InstancePerLifetimeScope();
+
+            //register ef core
+            DbContextOptionsBuilder<AppDbContext> dbContextoptionBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            dbContextoptionBuilder.UseNpgsql(@"Server=localhost; Port=8189; User Id=postgres; Password=; database=AppDbCcontext");
+            builder.Register(ctx => new AppDbContext(dbContextoptionBuilder.Options)).InstancePerLifetimeScope();
+
 
             builder.RegisterType<HttpClient>().SingleInstance();
             builder.RegisterType<HttpService>().As<IHttpService>().SingleInstance();
