@@ -15,10 +15,13 @@ namespace ConsumerService.Business
 
     public class PostgresBusiness : IPostgresBusiness
     {
-        public readonly IDapperRepository<Employee> _dapperRepository;
+        /// <summary>
+        /// I used Lazy because I wanted to create instance and open Dapper connection and transaction after truly it's usage
+        /// </summary>
+        public readonly Lazy<IDapperRepository<Employee>> _dapperRepository;
         public readonly AppDbContext _dbContext;
 
-        public PostgresBusiness(IDapperRepository<Employee> dapperRepository, AppDbContext dbContext)
+        public PostgresBusiness(Lazy<IDapperRepository<Employee>> dapperRepository, AppDbContext dbContext)
         {
             _dapperRepository = dapperRepository;
             _dbContext = dbContext;
@@ -27,20 +30,22 @@ namespace ConsumerService.Business
 
         public async Task HandleDapperLogic()
         {
+            IDapperRepository<Employee> _dapperRepositoryValue = _dapperRepository.Value;
+
             Guid id = Guid.NewGuid();
             var emp = new Employee { Id = id, first_name = "aaa11", last_name = "bbb11" };
-            await _dapperRepository.Add(emp);
+            await _dapperRepositoryValue.Add(emp);
 
             emp.address = "tehran";
-            await _dapperRepository.Update(emp);
+            await _dapperRepositoryValue.Update(emp);
 
-            await _dapperRepository.Commit();
+            await _dapperRepositoryValue.Commit();
 
-            Employee given = await _dapperRepository.FindById(id, nameof(Employee));
+            Employee given = await _dapperRepositoryValue.FindById(id, nameof(Employee));
 
-            await _dapperRepository.Remove(emp);
+            await _dapperRepositoryValue.Remove(emp);
 
-            await _dapperRepository.Commit();
+            await _dapperRepositoryValue.Commit();
         }
 
         public async Task HandleEfCoreLogic()
