@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FirstService.Controllers
@@ -51,18 +52,18 @@ namespace FirstService.Controllers
 
         [HttpGet]
         [Route(nameof(GetToken))]
-        public async Task<string> GetToken()
+        public async Task<string> GetToken(CancellationToken cancellationToken)
         {
             DiscoveryClient disClient = new DiscoveryClient($"http://{_oauthOptions.host}/");
             disClient.Policy.RequireHttps = false;
 
-            DiscoveryResponse disco = await disClient.GetAsync();
+            DiscoveryResponse disco = await disClient.GetAsync(cancellationToken);
             if (disco.IsError)
                 throw new Exception("invalid endponit");
 
             TokenClient tokenClient = new TokenClient(disco.TokenEndpoint, "socialnetwork", "secret");
 
-            TokenResponse tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("username", "password", "socialnetwork");
+            TokenResponse tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("username", "password", "socialnetwork", cancellationToken);
             //TokenResponse tokenResponse = await tokenClient.RequestClientCredentialsAsync("socialnetwork");
 
             if (tokenResponse.IsError)
@@ -71,7 +72,7 @@ namespace FirstService.Controllers
 
             HttpClient client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
-            HttpResponseMessage response = await client.GetAsync($"http://{_firstOptions.host}/api/home/valid");
+            HttpResponseMessage response = await client.GetAsync($"http://{_firstOptions.host}/api/home/valid", cancellationToken);
             string result = await response.Content.ReadAsStringAsync();
 
             return result + " & token: " + tokenResponse.AccessToken;
