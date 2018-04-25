@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Common.Middlewares.ServiceBus;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,10 @@ namespace Common.Implementations
             {
                 cfg.ReceiveEndpoint(host, consumerType.Name, e =>
                 {
+                    //a custom middleware
+                    e.UseLogger();
+                    e.UseExceptionLogger();
+
                     bool shouldRegisterConsumer = false;
                     if (onConfigure == null)
                         shouldRegisterConsumer = true;
