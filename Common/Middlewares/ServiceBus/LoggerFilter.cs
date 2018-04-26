@@ -1,4 +1,5 @@
 ﻿using GreenPipes;
+using MassTransit.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,14 +29,17 @@ namespace Common.Middlewares.ServiceBus
 
         public async Task Send(T context, IPipe<T> next)
         {
-            Console.WriteLine("--------------------");
-            Console.WriteLine("request started!");
-            //string a = ((IMyInterface)context).DestinationAddress;
+            Uri routeName = (Uri)(typeof(ConsumeContextProxy)
+                .GetProperty(nameof(ConsumeContextProxy.DestinationAddress))
+                .GetValue(context, null));
 
+            int random = new Random().Next(1000);
+
+            Console.WriteLine($"request {random}: '{routeName.LocalPath}' started!");
+            
             await next.Send(context);
 
-            Console.WriteLine("request finished!");
-            Console.WriteLine("--------------------");
+            Console.WriteLine($"request {random}: '{routeName.LocalPath}' finished!");
 
         }
     }
