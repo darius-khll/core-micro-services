@@ -41,6 +41,8 @@ namespace ConsumerService.Configurations
             dbContextoptionBuilder.UseNpgsql(postgresConnetion);
             builder.Register(ctx => new AppDbContext(dbContextoptionBuilder.Options)).InstancePerLifetimeScope();
 
+            //Initial seed data
+            AppDbContextSeedData.SeedData(dbContextoptionBuilder.Options);
 
             builder.RegisterType<HttpClient>().SingleInstance();
             builder.RegisterType<HttpService>().As<IHttpService>().SingleInstance();
