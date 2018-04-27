@@ -19,8 +19,11 @@ namespace Common.Implementations
         /// <param name="host">host</param>
         /// <param name="context">context</param>
         /// <param name="namespaces">find consumer in specefic namespaces </param>
-        /// <param name="onConfigure">overrided configs</param>
-        public static void RegisterAllConsumer(this IRabbitMqBusFactoryConfigurator cfg, IRabbitMqHost host, IComponentContext context, string[] namespaces, Func<TypeInfo, IRabbitMqReceiveEndpointConfigurator, bool> onConfigure = null)
+        /// <param name="consumerConfigure">overrided consumer configs</param>
+        public static void RegisterAllConsumer(this IRabbitMqBusFactoryConfigurator cfg,
+            IRabbitMqHost host, IComponentContext context,
+            string[] namespaces,
+            Func<TypeInfo, IRabbitMqReceiveEndpointConfigurator, bool> consumerConfigure = null)
         {
             MethodInfo autofacConsumerMethod = typeof(AutofacExtensions).GetTypeInfo()
                 .GetMethod(nameof(AutofacExtensions.Consumer),
@@ -32,15 +35,15 @@ namespace Common.Implementations
             {
                 cfg.ReceiveEndpoint(host, consumerType.Name, e =>
                 {
-                    //a custom middleware
+                    //custom middlewares
                     e.UseLogger();
                     e.UseExceptionLogger();
 
                     bool shouldRegisterConsumer = false;
-                    if (onConfigure == null)
+                    if (consumerConfigure == null)
                         shouldRegisterConsumer = true;
                     else
-                        shouldRegisterConsumer = onConfigure.Invoke(consumerType, e);
+                        shouldRegisterConsumer = consumerConfigure.Invoke(consumerType, e);
 
                     if (shouldRegisterConsumer)
                         autofacConsumerMethod.MakeGenericMethod(consumerType).Invoke(e, new object[] { e, context, "message" });
