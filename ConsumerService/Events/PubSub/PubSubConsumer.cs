@@ -31,4 +31,14 @@ namespace ConsumerService.Consumers
             await Task.Delay(1000);
         }
     }
+
+
+    //message will publish to all consumers which served IPubSub
+    public class PubSubConsumer1 : IConsumer<IPubSub>
+    {
+        public async Task Consume(ConsumeContext<IPubSub> context)
+        {
+            await Task.CompletedTask;
+        }
+    }
 }
