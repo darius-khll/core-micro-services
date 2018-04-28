@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Common.Repositories.Postgres.EfCore
 {
@@ -18,11 +19,15 @@ namespace Common.Repositories.Postgres.EfCore
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //for this scenario I create migration using this way but application works with options constructor
-            //we use this way overriding OnConfiguring when we wanna hard coded connection string
-            //used without DbContextOptions
-            //could be UseSqlServer
-            optionsBuilder.UseNpgsql(@"Server=localhost; Port=8189; User Id=postgres; Password=; database=AppDbContext");
+            string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            //should not override for production environment
+            //just for migration and development
+            if (String.IsNullOrEmpty(env) || env.ToLower() != "production")
+            {
+                //could be UseSqlServer
+                optionsBuilder.UseNpgsql(@"Server=localhost; Port=8189; User Id=user; Password=password; database=AppDbContext");
+            }
         }
     }
 }
