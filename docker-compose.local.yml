@@ -42,4 +42,7 @@ services:
       - "8189:5432"
     networks:
      - backend
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
 
