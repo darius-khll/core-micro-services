@@ -78,6 +78,7 @@ services:
      - backend
 
   postgres:
+    #bin/sh => psql -U postgres
     image: postgres
     ports:
       - "8189:5432"
