@@ -6,7 +6,7 @@ using Xunit;
 
 namespace ConsumerService.Test
 {
-    public class UnitTest1
+    public class UnitTest
     {
         [Fact]
         public async Task SumMethodInFirstBusinessShouldWorks()
