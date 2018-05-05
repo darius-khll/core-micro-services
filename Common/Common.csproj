@@ -10,13 +10,13 @@
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="Dapper.Contrib" Version="1.50.4" />
     
-    <PackageReference Include="MassTransit" Version="5.0.0" />
-    <PackageReference Include="MassTransit.Autofac" Version="5.0.0" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="5.0.0" />
+    <PackageReference Include="MassTransit" Version="5.0.2" />
+    <PackageReference Include="MassTransit.Autofac" Version="5.0.2" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.0.2" />
 
-    <PackageReference Include="MongoDB.Driver" Version="2.5.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
 
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
 
   </ItemGroup>
