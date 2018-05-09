@@ -3,6 +3,9 @@ version: '3'
 #run with docker-compose.override to handle Production environment and tests will run
 #docker-compose -f docker-compose.yml -f .\docker-compose.override.yml up --build
 
+#for accesing to any operation system use -it flag
+#docker run -it ubuntu
+
 networks:
   backend:
 
