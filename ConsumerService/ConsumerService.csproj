@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Automatonymous" Version="4.0.1" />
-    <PackageReference Include="MassTransit.Autofac" Version="5.0.2" />
-    <PackageReference Include="MassTransit.Automatonymous" Version="5.0.2" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="5.0.2" />
+    <PackageReference Include="Automatonymous" Version="4.1.0" />
+    <PackageReference Include="MassTransit.Autofac" Version="5.1.0" />
+    <PackageReference Include="MassTransit.Automatonymous" Version="5.1.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
