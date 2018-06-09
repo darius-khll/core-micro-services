@@ -14,7 +14,7 @@ namespace Common.Repositories
      */
     public class RedisRepository : IRedisRepository
     {
-        private readonly IDatabase  _client;
+        private readonly IDatabase _client;
 
         public RedisRepository(IDatabase client)
         {
